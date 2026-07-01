@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>James B. — Software Engineer Portfolio (Prototype)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          background: { DEFAULT: '#F9F8F4', dark: '#262624' },
+          foreground: { DEFAULT: '#30302E', dark: '#F2F0EB' },
+          muted: { DEFAULT: '#6B6A66', dark: '#A8A6A0' },
+          border: { DEFAULT: '#E5E2D9', dark: '#3A3937' },
+          accent: { DEFAULT: '#D97757', dark: '#E08661' },
+          success: { DEFAULT: '#4C9A6A' },
+          error: { DEFAULT: '#D95757' },
+        },
+        fontFamily: {
+          sans: ['Inter', '"IBM Plex Sans Thai"', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#F9F8F4; color:#30302E; }
+  html.dark body { background:#262624; color:#F2F0EB; }
+
+  .shiny-wrap { position:relative; display:inline-block; border-radius:0.6rem; padding:1.5px; overflow:hidden; }
+  .shiny-wrap::before {
+    content:''; position:absolute; inset:-1000%;
+    background: conic-gradient(from 90deg, #D97757, #f2c4ae, #D97757);
+    animation: spin 2.4s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .shiny-inner { position:relative; border-radius:0.55rem; }
+
+  .placeholder-box {
+    background: repeating-linear-gradient(45deg, rgba(107,106,102,.08) 0 10px, rgba(107,106,102,.03) 10px 20px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  html.dark .placeholder-box {
+    background: repeating-linear-gradient(45deg, rgba(168,166,160,.10) 0 10px, rgba(168,166,160,.04) 10px 20px);
+  }
+
+  #zpTrack { height: 260vh; position:relative; }
+  #zpSticky { position:sticky; top:0; height:100vh; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .zp-img { position:absolute; border-radius:0.75rem; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,.25); transition: transform .05s linear; }
+
+  [data-lang="th"] { display:none; }
+  html[data-lang-mode="th"] [data-lang="en"] { display:none; }
+  html[data-lang-mode="th"] [data-lang="th"] { display:inline; }
+  html[data-lang-mode="th"] span[data-lang="th"].block-el,
+  html[data-lang-mode="th"] div[data-lang="th"] { display:block; }
+</style>
+</head>
+<body class="font-sans transition-colors duration-300">
+
+<!-- NAV -->
+<header class="sticky top-0 z-40 backdrop-blur bg-background/80 dark:bg-background-dark/80 border-b border-border dark:border-border-dark">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="font-mono font-bold text-lg">JB<span class="text-accent dark:text-accent-dark">.</span></a>
+    <nav class="hidden md:flex gap-6 text-sm font-medium">
+      <a href="#about" class="hover:text-accent dark:hover:text-accent-dark"><span data-lang="en">About</span><span data-lang="th">เกี่ยวกับ</span></a>
+      <a href="#projects" class="hover:text-accent dark:hover:text-accent-dark"><span data-lang="en">Projects</span><span data-lang="th">ผลงาน</span></a>
+      <a href="#skills" class="hover:text-accent dark:hover:text-accent-dark"><span data-lang="en">Skills</span><span data-lang="th">ทักษะ</span></a>
+      <a href="#experience" class="hover:text-accent dark:hover:text-accent-dark"><span data-lang="en">Experience</span><span data-lang="th">ประสบการณ์</span></a>
+      <a href="#contact" class="hover:text-accent dark:hover:text-accent-dark"><span data-lang="en">Contact</span><span data-lang="th">ติดต่อ</span></a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="langToggle" aria-label="Toggle language" class="min-w-[44px] min-h-[44px] px-3 rounded-lg text-sm font-mono border border-border dark:border-border-dark hover:border-accent dark:hover:border-accent-dark transition-colors">EN / TH</button>
+      <button id="themeToggle" aria-label="Toggle dark mode" class="w-11 h-11 flex items-center justify-center rounded-lg border border-border dark:border-border-dark hover:border-accent dark:hover:border-accent-dark transition-colors">
+        <svg id="iconSun" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" class="min-h-[90vh] flex items-center">
+  <div class="max-w-6xl mx-auto px-6 py-24 w-full">
+    <p class="text-sm uppercase tracking-widest text-muted dark:text-muted-dark mb-4 font-mono">
+      <span data-lang="en">Hello, I'm</span><span data-lang="th">สวัสดีครับ ผมชื่อ</span>
+    </p>
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+      James B. — <span class="text-accent dark:text-accent-dark"><span data-lang="en">Software Engineer</span><span data-lang="th">ซอฟต์แวร์ เอ็นจิเนียร์</span></span>
+    </h1>
+    <p class="text-base md:text-lg text-muted dark:text-muted-dark max-w-xl mb-8">
+      <span data-lang="en">Building things on the web, one commit at a time. I like clean interfaces, fast sites, and the occasional overly-animated button.</span>
+      <span data-lang="th">สร้างสิ่งต่างๆ บนเว็บ ทีละ commit ชอบ interface ที่เรียบง่าย เว็บที่โหลดไว และปุ่มที่ลูกเล่นเยอะไปหน่อยเป็นบางครั้ง</span>
+    </p>
+    <div class="flex flex-wrap gap-4 items-center">
+      <div class="shiny-wrap">
+        <a href="#projects" class="shiny-inner block bg-background dark:bg-background-dark text-foreground dark:text-foreground-dark font-semibold px-6 py-3 text-sm">
+          <span data-lang="en">View Work</span><span data-lang="th">ดูผลงาน</span>
+        </a>
+      </div>
+      <a href="#contact" class="px-6 py-3 rounded-lg text-sm font-semibold border border-border dark:border-border-dark hover:border-accent dark:hover:border-accent-dark transition-colors">
+        <span data-lang="en">Contact</span><span data-lang="th">ติดต่อ</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / ZOOM PARALLAX -->
+<section id="about">
+  <div id="zpTrack">
+    <div id="zpSticky">
+      <div id="zpImages" class="relative w-full h-full max-w-6xl mx-auto"></div>
+      <div class="absolute inset-0 flex items-center justify-center px-6 pointer-events-none">
+        <div class="text-center max-w-lg bg-background/90 dark:bg-background-dark/90 backdrop-blur rounded-2xl px-8 py-6">
+          <h2 class="text-2xl font-bold mb-3">
+            <span data-lang="en">A bit about me</span><span data-lang="th">เกี่ยวกับตัวผม</span>
+          </h2>
+          <p class="text-sm md:text-base text-muted dark:text-muted-dark">
+            <span data-lang="en">I've spent the last few years building web apps professionally and side projects for fun — currently a Software Engineer at Acme Software Co., previously a Junior Developer cutting my teeth at a small startup.</span>
+            <span data-lang="th">ผมทำงานสร้างเว็บแอปพลิเคชันมาหลายปี ทั้งงานประจำและ side project ส่วนตัว ปัจจุบันเป็น Software Engineer ที่ Acme Software Co. ก่อนหน้านี้เริ่มต้นเป็น Junior Developer ที่สตาร์ทอัพเล็กๆ</span>
+          </p>
+          <p class="text-xs text-muted dark:text-muted-dark mt-4 font-mono">[ images are placeholders — real photos TBD ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-2"><span data-lang="en">Projects</span><span data-lang="th">ผลงาน</span></h2>
+    <p class="text-muted dark:text-muted-dark mb-10"><span data-lang="en">A few things I've built recently.</span><span data-lang="th">ผลงานบางส่วนที่ทำเมื่อไม่นานมานี้</span></p>
+    <div id="projectsGrid" class="grid md:grid-cols-2 gap-6"></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-24 border-t border-border dark:border-border-dark">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-10"><span data-lang="en">Skills</span><span data-lang="th">ทักษะ</span></h2>
+    <div id="skillsWrap" class="space-y-6"></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="py-24 border-t border-border dark:border-border-dark">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-10"><span data-lang="en">Experience</span><span data-lang="th">ประสบการณ์ทำงาน</span></h2>
+    <div id="experienceList" class="space-y-8 max-w-2xl"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 border-t border-border dark:border-border-dark">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+    <div>
+      <h2 class="text-3xl font-bold mb-2"><span data-lang="en">Contact</span><span data-lang="th">ติดต่อ</span></h2>
+      <p class="text-muted dark:text-muted-dark mb-6"><span data-lang="en">Have a role in mind, or just want to say hi?</span><span data-lang="th">มีตำแหน่งงานในใจ หรืออยากทักทายเฉยๆ ก็ได้</span></p>
+
+      <form id="contactForm" novalidate class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1" for="cf-name"><span data-lang="en">Name</span><span data-lang="th">ชื่อ</span></label>
+          <input id="cf-name" name="name" type="text" class="w-full min-h-[44px] px-3 py-2 rounded-lg border border-border dark:border-border-dark bg-transparent focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-accent-dark" />
+          <p class="cf-error text-error text-xs mt-1 hidden" data-for="name"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="cf-email"><span data-lang="en">Email</span><span data-lang="th">อีเมล</span></label>
+          <input id="cf-email" name="email" type="email" class="w-full min-h-[44px] px-3 py-2 rounded-lg border border-border dark:border-border-dark bg-transparent focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-accent-dark" />
+          <p class="cf-error text-error text-xs mt-1 hidden" data-for="email"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="cf-message"><span data-lang="en">Message</span><span data-lang="th">ข้อความ</span></label>
+          <textarea id="cf-message" name="message" rows="4" class="w-full px-3 py-2 rounded-lg border border-border dark:border-border-dark bg-transparent focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-accent-dark"></textarea>
+          <p class="cf-error text-error text-xs mt-1 hidden" data-for="message"></p>
+        </div>
+        <!-- honeypot: hidden from real users, per SA_BLUEPRINT.md §4 -->
+        <input type="text" name="honeypot" class="hidden" tabindex="-1" autocomplete="off" />
+
+        <p id="cf-form-error" class="text-error text-sm hidden">
+          <span data-lang="en">Something went wrong — please try again.</span><span data-lang="th">เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง</span>
+        </p>
+
+        <div class="shiny-wrap">
+          <button type="submit" id="cf-submit" class="shiny-inner flex items-center gap-2 bg-background dark:bg-background-dark text-foreground dark:text-foreground-dark font-semibold px-6 py-3 text-sm min-h-[44px]">
+            <svg id="cf-spinner" class="w-4 h-4 animate-spin hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></svg>
+            <span data-lang="en">Send Message</span><span data-lang="th">ส่งข้อความ</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="cf-success" class="hidden">
+        <div class="flex items-center gap-3 text-success">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <p class="font-medium"><span data-lang="en">Thanks — I'll get back to you soon.</span><span data-lang="th">ขอบคุณครับ ผมจะติดต่อกลับไปเร็วๆ นี้</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-lg font-semibold mb-4"><span data-lang="en">Direct channels</span><span data-lang="th">ช่องทางติดต่อโดยตรง</span></h3>
+      <div class="space-y-3" id="directChannels"></div>
+
+      <a href="#" onclick="return false;" class="mt-8 inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-lg border border-border dark:border-border-dark hover:border-accent dark:hover:border-accent-dark text-sm font-semibold transition-colors">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M5 21h14"/></svg>
+        <span data-lang="en">Download Resume (PDF)</span><span data-lang="th">ดาวน์โหลดเรซูเม่ (PDF)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-border dark:border-border-dark py-10">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted dark:text-muted-dark">
+    <p class="font-mono">© 2026 James B.</p>
+    <div class="flex gap-4" id="footerChannels"></div>
+  </div>
+  <p class="text-center text-xs text-muted dark:text-muted-dark mt-6 font-mono px-6">
+    Clickable prototype — mock data only, no real backend/API calls. Real implementation happens in /dev.
+  </p>
+</footer>
+
+<script>
+(function () {
+  // ---------- THEME ----------
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const iconSun = document.getElementById('iconSun');
+  const iconMoon = document.getElementById('iconMoon');
+  function applyTheme(dark) {
+    root.classList.toggle('dark', dark);
+    iconSun.classList.toggle('hidden', dark);
+    iconMoon.classList.toggle('hidden', !dark);
+  }
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(prefersDark);
+  themeToggle.addEventListener('click', () => applyTheme(!root.classList.contains('dark')));
+
+  // ---------- LANGUAGE ----------
+  const langToggle = document.getElementById('langToggle');
+  function applyLang(lang) {
+    root.setAttribute('data-lang-mode', lang);
+  }
+  applyLang('en');
+  langToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-lang-mode') === 'en' ? 'th' : 'en';
+    applyLang(next);
+  });
+
+  // ---------- MOCK DATA (shapes mirror SA_BLUEPRINT.md content model) ----------
+  const projects = [
+    {
+      id: 'taskflow',
+      title: 'TaskFlow',
+      description: {
+        en: 'A Kanban-style task manager with realtime drag-and-drop boards and team collaboration.',
+        th: 'แอปจัดการงานสไตล์ Kanban ลาก-วางบอร์ดแบบเรียลไทม์ พร้อมฟีเจอร์ทำงานร่วมกับทีม',
+      },
+      tags: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+      liveUrl: 'https://taskflow-demo.example.com',
+      repoUrl: 'https://github.com/jamesb/taskflow',
+    },
+    {
+      id: 'weatherly',
+      title: 'Weatherly',
+      description: {
+        en: 'A fast, minimal weather forecast app with location search and 7-day outlook.',
+        th: 'แอปพยากรณ์อากาศที่รวดเร็วและเรียบง่าย ค้นหาตำแหน่งได้และดูพยากรณ์ล่วงหน้า 7 วัน',
+      },
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+      liveUrl: 'https://weatherly-demo.example.com',
+      repoUrl: 'https://github.com/jamesb/weatherly',
+    },
+    {
+      id: 'devmetrics',
+      title: 'DevMetrics Dashboard',
+      description: {
+        en: 'A client-facing analytics dashboard built at my current role. (Public product — details reviewed for confidentiality before publishing.)',
+        th: 'แดชบอร์ดวิเคราะห์ข้อมูลสำหรับลูกค้า ที่สร้างในงานปัจจุบัน (โปรดักต์ public — ตรวจสอบความลับก่อน publish จริง)',
+      },
+      tags: ['Vue.js', 'Node.js', 'Docker'],
+      liveUrl: 'https://devmetrics-demo.example.com',
+      repoUrl: null,
+    },
+  ];
+
+  const skillCategories = [
+    { category: { en: 'Languages', th: 'ภาษาโปรแกรม' }, items: ['TypeScript', 'JavaScript', 'Python'] },
+    { category: { en: 'Frameworks', th: 'เฟรมเวิร์ก' }, items: ['React', 'Next.js', 'Node.js'] },
+    { category: { en: 'Tools', th: 'เครื่องมือ' }, items: ['PostgreSQL', 'Docker', 'Git', 'Tailwind CSS'] },
+  ];
+
+  const experience = [
+    {
+      company: 'Acme Software Co.',
+      role: { en: 'Software Engineer', th: 'ซอฟต์แวร์ เอ็นจิเนียร์' },
+      start: '2023-06',
+      end: null, // present
+      description: {
+        en: 'Building and maintaining client-facing web products across the stack.',
+        th: 'พัฒนาและดูแลผลิตภัณฑ์เว็บสำหรับลูกค้าทั้งฝั่ง frontend และ backend',
+      },
+    },
+    {
+      company: 'StartupXYZ',
+      role: { en: 'Junior Developer', th: 'จูเนียร์ ดีเวลลอปเปอร์' },
+      start: '2021-01',
+      end: '2023-05',
+      description: {
+        en: 'Started my career shipping features for an early-stage product team.',
+        th: 'เริ่มต้นสายอาชีพด้วยการพัฒนาฟีเจอร์ให้ทีมโปรดักต์ในช่วงเริ่มต้นบริษัท',
+      },
+    },
+  ];
+
+  const directChannels = [
+    { label: 'Email', href: 'mailto:james.b@example.com', icon: 'mail' },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/jamesb', icon: 'linkedin' },
+    { label: 'GitHub', href: 'https://github.com/jamesb', icon: 'github' },
+  ];
+
+  const icons = {
+    mail: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    linkedin: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-5M12 11c1-1.2 4-1.5 4 1v4"/></svg>',
+    github: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>',
+    external: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>',
+    repo: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>',
+  };
+
+  // ---------- RENDER PROJECTS ----------
+  const projectsGrid = document.getElementById('projectsGrid');
+  projectsGrid.innerHTML = projects.map(p => `
+    <div class="rounded-2xl border border-border dark:border-border-dark overflow-hidden group">
+      <div class="placeholder-box h-44">
+        <svg class="w-10 h-10 text-muted dark:text-muted-dark opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      </div>
+      <div class="p-6">
+        <h3 class="font-bold text-lg mb-1">${p.title}</h3>
+        <p class="text-sm text-muted dark:text-muted-dark mb-3">
+          <span data-lang="en">${p.description.en}</span><span data-lang="th">${p.description.th}</span>
+        </p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          ${p.tags.map(t => `<span class="font-mono text-xs px-2 py-1 rounded-md border border-border dark:border-border-dark">${t}</span>`).join('')}
+        </div>
+        <div class="flex gap-4 text-sm font-medium">
+          ${p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-accent dark:text-accent-dark hover:underline">${icons.external}<span data-lang="en">Live</span><span data-lang="th">ดูเว็บ</span></a>` : ''}
+          ${p.repoUrl ? `<a href="${p.repoUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 hover:underline">${icons.repo}<span data-lang="en">Code</span><span data-lang="th">โค้ด</span></a>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // ---------- RENDER SKILLS ----------
+  const skillsWrap = document.getElementById('skillsWrap');
+  skillsWrap.innerHTML = skillCategories.map(c => `
+    <div>
+      <p class="text-sm font-mono uppercase tracking-wide text-muted dark:text-muted-dark mb-2">
+        <span data-lang="en">${c.category.en}</span><span data-lang="th">${c.category.th}</span>
+      </p>
+      <div class="flex flex-wrap gap-2">
+        ${c.items.map(s => `<span class="px-3 py-1.5 rounded-full border border-border dark:border-border-dark text-sm">${s}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // ---------- RENDER EXPERIENCE ----------
+  const experienceList = document.getElementById('experienceList');
+  experienceList.innerHTML = experience.map(e => `
+    <div class="relative pl-6 border-l-2 border-border dark:border-border-dark">
+      <span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-accent dark:bg-accent-dark"></span>
+      <p class="text-xs font-mono text-muted dark:text-muted-dark mb-1">
+        ${e.start} — ${e.end ? e.end : '<span data-lang="en">Present</span><span data-lang="th">ปัจจุบัน</span>'}
+      </p>
+      <h3 class="font-bold">${e.company} · <span data-lang="en">${e.role.en}</span><span data-lang="th">${e.role.th}</span></h3>
+      <p class="text-sm text-muted dark:text-muted-dark mt-1">
+        <span data-lang="en">${e.description.en}</span><span data-lang="th">${e.description.th}</span>
+      </p>
+    </div>
+  `).join('');
+
+  // ---------- RENDER CONTACT CHANNELS ----------
+  function renderChannels(container, withLabel) {
+    container.innerHTML = directChannels.map(c => `
+      <a href="${c.href}" target="_blank" rel="noopener" class="flex items-center gap-3 min-h-[44px] ${withLabel ? 'px-3' : ''} rounded-lg hover:text-accent dark:hover:text-accent-dark transition-colors">
+        ${icons[c.icon]} ${withLabel ? `<span class="text-sm font-medium">${c.label}</span>` : ''}
+      </a>
+    `).join('');
+  }
+  renderChannels(document.getElementById('directChannels'), true);
+  renderChannels(document.getElementById('footerChannels'), false);
+
+  // ---------- ZOOM PARALLAX (About) ----------
+  const zpTrack = document.getElementById('zpTrack');
+  const zpImagesWrap = document.getElementById('zpImages');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const zpData = [
+    { top: '38%', left: '50%', w: '30%', h: '42%', scale: 3 },
+    { top: '15%', left: '14%', w: '16%', h: '24%', scale: 4 },
+    { top: '20%', left: '82%', w: '13%', h: '20%', scale: 5 },
+    { top: '80%', left: '18%', w: '15%', h: '20%', scale: 4 },
+    { top: '82%', left: '78%', w: '13%', h: '18%', scale: 6 },
+  ];
+  const zpEls = zpData.map(d => {
+    const el = document.createElement('div');
+    el.className = 'zp-img placeholder-box';
+    el.style.top = d.top; el.style.left = d.left; el.style.width = d.w; el.style.height = d.h;
+    el.style.transform = 'translate(-50%,-50%) scale(1)';
+    el.dataset.scale = d.scale;
+    el.innerHTML = '<svg class="w-6 h-6 text-muted dark:text-muted-dark opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>';
+    zpImagesWrap.appendChild(el);
+    return el;
+  });
+
+  if (reduceMotion) {
+    zpTrack.style.height = 'auto';
+    document.getElementById('zpSticky').style.position = 'relative';
+    document.getElementById('zpSticky').style.height = '70vh';
+  } else {
+    window.addEventListener('scroll', () => {
+      const rect = zpTrack.getBoundingClientRect();
+      const trackHeight = zpTrack.offsetHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, -rect.top / trackHeight));
+      zpEls.forEach(el => {
+        const maxScale = parseFloat(el.dataset.scale);
+        const s = 1 + progress * (maxScale - 1);
+        el.style.transform = `translate(-50%,-50%) scale(${s})`;
+      });
+    }, { passive: true });
+  }
+
+  // ---------- CONTACT FORM (mock — no real network call) ----------
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('cf-submit');
+  const spinner = document.getElementById('cf-spinner');
+  const formError = document.getElementById('cf-form-error');
+  const successBlock = document.getElementById('cf-success');
+
+  function setFieldError(field, message) {
+    const p = form.querySelector(`.cf-error[data-for="${field}"]`);
+    if (message) { p.textContent = message; p.classList.remove('hidden'); }
+    else { p.classList.add('hidden'); }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    formError.classList.add('hidden');
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    let hasError = false;
+    setFieldError('name', name ? '' : (root.getAttribute('data-lang-mode') === 'th' ? 'กรุณากรอกชื่อ' : 'Name is required'));
+    if (!name) hasError = true;
+    setFieldError('email', emailValid ? '' : (root.getAttribute('data-lang-mode') === 'th' ? 'อีเมลไม่ถูกต้อง' : 'Enter a valid email'));
+    if (!emailValid) hasError = true;
+    setFieldError('message', message ? '' : (root.getAttribute('data-lang-mode') === 'th' ? 'กรุณากรอกข้อความ' : 'Message is required'));
+    if (!message) hasError = true;
+
+    if (hasError) return;
+
+    // mock submit — simulates POST /api/contact per SA_BLUEPRINT.md §3
+    submitBtn.disabled = true;
+    spinner.classList.remove('hidden');
+    setTimeout(() => {
+      spinner.classList.add('hidden');
+      submitBtn.disabled = false;
+      form.classList.add('hidden');
+      successBlock.classList.remove('hidden');
+    }, 900);
+  });
+})();
+</script>
+</body>
+</html>
