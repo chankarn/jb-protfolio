@@ -14,7 +14,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#hero" className="font-mono text-lg font-bold">
-          JB<span className="text-primary">.</span>
+          CS<span className="text-primary">.</span>
         </a>
 
         <nav className="hidden gap-6 text-sm font-medium md:flex">

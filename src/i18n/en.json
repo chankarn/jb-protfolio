@@ -8,14 +8,14 @@
   },
   "hero": {
     "greeting": "Hello, I'm",
-    "role": "Software Engineer",
-    "pitch": "Building things on the web, one commit at a time. I like clean interfaces, fast sites, and the occasional overly-animated button.",
+    "role": "Full-Stack Developer",
+    "pitch": "I love creating web and mobile apps that are both efficient and user-friendly. With experience in modern tools like React, TypeScript, and Java, I enjoy solving problems and building solutions that make things run smoothly.",
     "viewWork": "View Work",
     "contact": "Contact"
   },
   "about": {
     "heading": "A bit about me",
-    "body": "I've spent the last few years building web apps professionally and side projects for fun — currently a Software Engineer at Acme Software Co., previously a Junior Developer cutting my teeth at a small startup.",
+    "body": "I'm a full-stack developer currently building mobile and web products at Easset Company Limited, with a Bachelor's in Computer Science from Kasetsart University. I enjoy working across the whole stack — from React and React Native on the frontend to Java and Node.js on the backend.",
     "placeholderNote": "images are placeholders — real photos TBD"
   },
   "projects": {

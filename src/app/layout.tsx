@@ -21,8 +21,8 @@ const ibmPlexSansThai = IBM_Plex_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "James B. — Software Engineer",
-  description: "Portfolio site of James B., Software Engineer.",
+  title: "Chanakarn Susinraworn — Full-Stack Developer",
+  description: "Portfolio site of Chanakarn Susinraworn, Full-Stack Developer.",
 };
 
 export default function RootLayout({

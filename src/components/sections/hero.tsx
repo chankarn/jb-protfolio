@@ -14,7 +14,7 @@ export function Hero() {
           {t("hero.greeting")}
         </p>
         <h1 className="mb-4 text-4xl font-extrabold leading-tight md:text-6xl">
-          James B. —{" "}
+          Chanakarn Susinraworn —{" "}
           <span className="text-primary">{t("hero.role")}</span>
         </h1>
         <p className="mb-8 max-w-xl text-base text-muted-foreground md:text-lg">

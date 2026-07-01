@@ -2,23 +2,28 @@
 
 // Renders the direct contact channels (email, LinkedIn, GitHub). Used with labels
 // in the Contact section and as icon-only in the Footer.
-import { Mail } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
 import { channels, type ChannelIcon } from "@/content/contact";
 import { cn } from "@/lib/utils";
 
 const ICONS: Record<ChannelIcon, React.ComponentType<{ className?: string }>> = {
   mail: Mail,
+  phone: Phone,
   linkedin: LinkedinIcon,
   github: GithubIcon,
 };
+
+const SAME_TAB_SCHEMES = ["mailto:", "tel:"];
 
 export function ChannelLinks({ withLabels = true }: { withLabels?: boolean }) {
   return (
     <div className={cn(withLabels ? "space-y-3" : "flex gap-4")}>
       {channels.map((channel) => {
         const Icon = ICONS[channel.icon];
-        const external = !channel.href.startsWith("mailto:");
+        const external = !SAME_TAB_SCHEMES.some((scheme) =>
+          channel.href.startsWith(scheme)
+        );
         return (
           <a
             key={channel.label}
