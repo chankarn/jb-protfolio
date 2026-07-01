@@ -1,15 +1,19 @@
 "use client";
 
-// Projects grid. Each card: placeholder image, title, bilingual description,
-// tech tags, and live/code links (repoUrl is optional — some cards omit it).
-import { ExternalLink } from "lucide-react";
+// Projects grid. Each card: placeholder image (click to open details modal),
+// title, bilingual description, tech tags, and live/code links (repoUrl is
+// optional — some cards omit it).
+import { useState } from "react";
+import { Eye, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/ui/brand-icons";
 import { useLanguage } from "@/components/providers/language-provider";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
-import { projects } from "@/content/projects";
+import { ProjectModal } from "@/components/project-modal";
+import { projects, type Project } from "@/content/projects";
 
 export function Projects() {
   const { t, lang } = useLanguage();
+  const [selected, setSelected] = useState<Project | null>(null);
 
   return (
     <section id="projects" className="py-24">
@@ -21,18 +25,35 @@ export function Projects() {
           {projects.map((project) => (
             <article
               key={project.id}
-              className="group overflow-hidden rounded-2xl border border-border"
+              className="group overflow-hidden rounded-2xl border border-border transition-colors hover:border-primary/50"
             >
-              <div className="relative h-44">
+              <button
+                type="button"
+                onClick={() => setSelected(project)}
+                aria-label={`${t("projects.viewDetails")}: ${project.title}`}
+                className="relative block h-44 w-full cursor-pointer"
+              >
                 <PlaceholderImage
                   src={project.imageSrc}
                   alt={`${project.title} preview`}
                   className="h-full w-full"
                   iconClassName="size-10"
                 />
-              </div>
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-background/0 text-sm font-semibold opacity-0 backdrop-blur-0 transition-all duration-200 group-hover:bg-background/70 group-hover:opacity-100 group-hover:backdrop-blur-sm">
+                  <Eye className="size-4" />
+                  {t("projects.viewDetails")}
+                </div>
+              </button>
               <div className="p-6">
-                <h3 className="mb-1 text-lg font-bold">{project.title}</h3>
+                <h3 className="mb-1 text-lg font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setSelected(project)}
+                    className="text-left hover:text-primary"
+                  >
+                    {project.title}
+                  </button>
+                </h3>
                 <p className="mb-3 text-sm text-muted-foreground">
                   {lang === "th"
                     ? project.description_th
@@ -77,6 +98,11 @@ export function Projects() {
           ))}
         </div>
       </div>
+
+      <ProjectModal
+        project={selected}
+        onOpenChange={(open) => !open && setSelected(null)}
+      />
     </section>
   );
 }
