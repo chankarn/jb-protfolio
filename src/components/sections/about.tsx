@@ -2,7 +2,9 @@
 
 // About + Zoom Parallax. Images scale up with scroll progress (framer-motion
 // useScroll/useTransform), modeled on the 21st.dev component the user referenced.
-// Respects prefers-reduced-motion: falls back to a static grid, no scroll-jacking.
+// Falls back to a static grid — no scroll-jacking — when prefers-reduced-motion
+// is set, OR on mobile viewports (docs/PRD.md §5: the desktop-tuned vw/vh image
+// positions and 300vh scroll track don't hold up on narrow/touch screens).
 import { useRef } from "react";
 import {
   motion,
@@ -12,6 +14,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { aboutImages, type AboutImage } from "@/content/about-images";
 
@@ -59,13 +62,14 @@ function ZoomImage({
 export function About() {
   const container = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start start", "end end"],
   });
 
-  // Reduced-motion fallback: a static section, no scroll track, no scaling.
-  if (reduceMotion) {
+  // Static fallback: no scroll track, no scaling — reduced motion or mobile.
+  if (reduceMotion || isMobile) {
     return (
       <section id="about" className="py-24">
         <div className="mx-auto max-w-6xl px-6">
