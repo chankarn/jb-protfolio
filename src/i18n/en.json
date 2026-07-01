@@ -1,1 +1,62 @@
-{}
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "experience": "Experience",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "role": "Software Engineer",
+    "pitch": "Building things on the web, one commit at a time. I like clean interfaces, fast sites, and the occasional overly-animated button.",
+    "viewWork": "View Work",
+    "contact": "Contact"
+  },
+  "about": {
+    "heading": "A bit about me",
+    "body": "I've spent the last few years building web apps professionally and side projects for fun — currently a Software Engineer at Acme Software Co., previously a Junior Developer cutting my teeth at a small startup.",
+    "placeholderNote": "images are placeholders — real photos TBD"
+  },
+  "projects": {
+    "heading": "Projects",
+    "subtitle": "A few things I've built recently.",
+    "live": "Live",
+    "code": "Code"
+  },
+  "skills": {
+    "heading": "Skills",
+    "categories": {
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "tools": "Tools"
+    }
+  },
+  "experience": {
+    "heading": "Experience",
+    "present": "Present"
+  },
+  "contact": {
+    "heading": "Contact",
+    "subtitle": "Have a role in mind, or just want to say hi?",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending…",
+    "success": "Thanks — I'll get back to you soon.",
+    "directChannels": "Direct channels",
+    "downloadResume": "Download Resume (PDF)",
+    "privacyNote": "Your info is only used to reply to you, never shared.",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailInvalid": "Enter a valid email",
+      "messageRequired": "Message is required",
+      "formError": "Something went wrong — please try again.",
+      "rateLimited": "Too many messages — please try again later."
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
