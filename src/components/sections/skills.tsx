@@ -1,8 +1,18 @@
 "use client";
 
-// Skills grouped by category (bilingual labels via i18n keys).
+// Skills grouped by category (bilingual labels via i18n keys). Each category
+// gets a distinct accent so the section isn't a wall of identical gray pills —
+// Languages stays neutral, Frameworks uses the primary accent, Tools uses the
+// secondary accent (deep indigo, docs/UXUI_DESIGN.md §1).
 import { useLanguage } from "@/components/providers/language-provider";
-import { skills, SKILL_CATEGORY_ORDER } from "@/content/skills";
+import { skills, SKILL_CATEGORY_ORDER, type Skill } from "@/content/skills";
+import { cn } from "@/lib/utils";
+
+const CATEGORY_STYLES: Record<Skill["category"], string> = {
+  languages: "border-border text-foreground",
+  frameworks: "border-primary/40 text-primary",
+  tools: "border-secondary-accent/40 text-secondary-accent",
+};
 
 export function Skills() {
   const { t } = useLanguage();
@@ -25,7 +35,10 @@ export function Skills() {
                   {items.map((skill) => (
                     <span
                       key={skill.name}
-                      className="rounded-full border border-border px-3 py-1.5 text-sm"
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-sm",
+                        CATEGORY_STYLES[category]
+                      )}
                     >
                       {skill.name}
                     </span>

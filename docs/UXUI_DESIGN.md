@@ -31,6 +31,8 @@ The Thai font loads only its weights actually used (400/500/600/700) to keep pay
 | `border` | `#E5E2D9` | `#3A3937` | card/section borders, dividers |
 | `accent` | `#D97757` | `#E08661` | CTAs, links, active states, focus rings — slightly brighter in dark mode to hold contrast against the darker background |
 | `accent-foreground` | `#FFFFFF` | `#1A1918` | text/icons placed *on* an accent-colored surface (e.g. filled button label) |
+| `secondary-accent` | `#3D5A80` | `#6E9DC9` | deep indigo — complementary to the primary orange; used sparingly for categorical variety (e.g. the "Tools" skill-tag group), never as a second primary CTA color |
+| `secondary-accent-foreground` | `#FFFFFF` | `#042C53` | text/icons placed *on* a secondary-accent-colored surface |
 
 Semantic states reuse the accent + neutral system rather than introducing new brand colors, since a portfolio doesn't need a full product-style semantic palette:
 
