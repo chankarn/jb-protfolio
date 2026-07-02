@@ -19,13 +19,22 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  const isDark = resolvedTheme === "dark";
+  // Before mount, resolvedTheme is unknown — keep BOTH the icon and the
+  // aria-label in their pre-mount state so the server and client's first render
+  // agree (guarding only the icon still left the aria-label mismatching).
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <Button
       variant="outline"
       size="icon"
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={
+        !mounted
+          ? "Toggle color mode"
+          : isDark
+            ? "Switch to light mode"
+            : "Switch to dark mode"
+      }
       className="size-11"
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >

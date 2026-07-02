@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { GithubIcon } from "@/components/ui/brand-icons";
 import { ShinyButton } from "@/components/ui/shiny-button";
+import { BlurText } from "@/components/ui/blur-text";
 import { ProjectImageCarousel } from "@/components/project-image-carousel";
 import { useLanguage } from "@/components/providers/language-provider";
 import type { Project } from "@/content/projects";
@@ -41,9 +42,13 @@ export function ProjectModal({
               </DialogTitle>
             </DialogHeader>
 
-            <p className="text-sm text-muted-foreground">
-              {lang === "th" ? project.description_th : project.description_en}
-            </p>
+            <BlurText
+              text={
+                lang === "th" ? project.description_th : project.description_en
+              }
+              resetKey={`${project.id}-${lang}`}
+              className="text-sm text-muted-foreground"
+            />
 
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
