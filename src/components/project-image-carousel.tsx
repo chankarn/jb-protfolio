@@ -4,14 +4,21 @@
 // "circular testimonials" component the user liked (3 visible slides: left/
 // center/right with perspective + rotateY, arrow navigation, keyboard support).
 // Rebuilt with our design tokens instead of hardcoded hex colors, lucide-react
-// icons instead of react-icons (already the icon set used everywhere else in
-// this app), and Tailwind classes instead of styled-jsx (not used elsewhere in
-// this codebase). No autoplay — unlike a testimonial strip, someone opening a
-// project modal wants to browse screenshots at their own pace, not watch them
-// auto-rotate while reading.
+// icons instead of react-icons, and Tailwind instead of styled-jsx. No autoplay
+// — someone opening a project modal wants to browse screenshots at their own
+// pace, not watch them auto-rotate while reading.
+//
+// Layout note: the left/center/right positions are FIXED containers; only the
+// *content* inside each crossfades when activeIndex changes. An earlier version
+// gave each image its own travelling position (recompute translateX per index),
+// which looks fine for 4+ images but forces one slide to visually sweep all the
+// way from the far left to the far right (or vice versa) whenever there are
+// exactly 3 images, since every position is always occupied — confirmed janky
+// in-browser. Fixed slots + content crossfade avoids that entirely, regardless
+// of image count.
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useReducedMotion } from "framer-motion";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { cn } from "@/lib/utils";
 
@@ -40,45 +47,48 @@ export function ProjectImageCarousel({
 
   if (count === 0) return null;
 
-  function slideStyle(index: number): React.CSSProperties {
-    const offset = (index - activeIndex + count) % count;
-    const isActive = offset === 0;
-    const isPrev = offset === count - 1;
-    const isNext = offset === 1;
-    const transition = reduceMotion ? "none" : "all 0.5s cubic-bezier(.4,2,.3,1)";
-
-    if (isActive) {
-      return { zIndex: 3, opacity: 1, transform: "translateX(0) scale(1) rotateY(0deg)", transition };
-    }
-    if (isPrev && count > 1) {
-      return { zIndex: 2, opacity: count > 2 ? 1 : 0, pointerEvents: "none", transform: "translateX(-55%) scale(0.85) rotateY(20deg)", transition };
-    }
-    if (isNext && count > 1) {
-      return { zIndex: 2, opacity: count > 2 ? 1 : 0, pointerEvents: "none", transform: "translateX(55%) scale(0.85) rotateY(-20deg)", transition };
-    }
-    return { zIndex: 1, opacity: 0, pointerEvents: "none", transition };
-  }
+  const prevIndex = (activeIndex - 1 + count) % count;
+  const nextIndex = (activeIndex + 1) % count;
+  const showSides = count > 1;
 
   return (
     <div className="space-y-3">
       <div
         className="relative h-56 sm:h-72"
-        style={{ perspective: count > 1 ? "1000px" : undefined }}
+        style={{ perspective: showSides ? "1000px" : undefined }}
       >
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className="absolute inset-x-[8%] inset-y-0 overflow-hidden rounded-xl shadow-lg"
-            style={slideStyle(index)}
-          >
-            <PlaceholderImage
-              src={src}
-              alt={`${alt} — screenshot ${index + 1} of ${count}`}
-              className="h-full w-full"
-              iconClassName="size-10"
-            />
-          </div>
-        ))}
+        {showSides && (
+          <Slot
+            slotKey={`prev-${prevIndex}`}
+            src={images[prevIndex]}
+            alt={`${alt} — screenshot ${prevIndex + 1} of ${count}`}
+            className="absolute inset-y-0 left-0 w-[46%]"
+            style={{ transform: "translateX(4%) scale(0.85) rotateY(20deg)" }}
+            reduceMotion={reduceMotion}
+          />
+        )}
+
+        <Slot
+          slotKey={`active-${activeIndex}`}
+          src={images[activeIndex]}
+          alt={`${alt} — screenshot ${activeIndex + 1} of ${count}`}
+          className={cn(
+            "absolute inset-y-0 z-10",
+            showSides ? "inset-x-[21%]" : "inset-x-[8%]"
+          )}
+          reduceMotion={reduceMotion}
+        />
+
+        {showSides && (
+          <Slot
+            slotKey={`next-${nextIndex}`}
+            src={images[nextIndex]}
+            alt={`${alt} — screenshot ${nextIndex + 1} of ${count}`}
+            className="absolute inset-y-0 right-0 w-[46%]"
+            style={{ transform: "translateX(-4%) scale(0.85) rotateY(-20deg)" }}
+            reduceMotion={reduceMotion}
+          />
+        )}
       </div>
 
       {count > 1 && (
@@ -115,6 +125,49 @@ export function ProjectImageCarousel({
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+// A fixed-position slot whose CONTENT crossfades via AnimatePresence when
+// `slotKey` changes — the slot itself never moves, so nothing sweeps.
+function Slot({
+  slotKey,
+  src,
+  alt,
+  className,
+  style,
+  reduceMotion,
+}: {
+  slotKey: string;
+  src: string;
+  alt: string;
+  className: string;
+  style?: React.CSSProperties;
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <div
+      className={cn("overflow-hidden rounded-xl shadow-lg", className)}
+      style={style}
+    >
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={slotKey}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.35, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <PlaceholderImage
+            src={src}
+            alt={alt}
+            className="h-full w-full"
+            iconClassName="size-10"
+          />
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
