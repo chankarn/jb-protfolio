@@ -2,10 +2,9 @@
 
 // Project detail modal. Built on shadcn/Radix Dialog (accessible for free:
 // focus trap, Escape, click-outside, aria roles) with fade/zoom entrance from
-// tw-animate-css. The image area has a mouse-tracked spotlight — a callback to
-// the "Spotlight Card" concept from the original brainstorm — for a bit of the
-// interactive feel requested, without touching the shared ShinyButton budget.
-import { useState } from "react";
+// tw-animate-css. The image area is a 3D layered screenshot carousel
+// (see ProjectImageCarousel) — replaces the old single-image spotlight now
+// that each project has 2-4 screenshots to browse.
 import { ExternalLink } from "lucide-react";
 import {
   Dialog,
@@ -15,46 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { GithubIcon } from "@/components/ui/brand-icons";
 import { ShinyButton } from "@/components/ui/shiny-button";
-import { PlaceholderImage } from "@/components/ui/placeholder-image";
+import { ProjectImageCarousel } from "@/components/project-image-carousel";
 import { useLanguage } from "@/components/providers/language-provider";
 import type { Project } from "@/content/projects";
 import { getProjectTagClassName } from "@/lib/tag-style";
 import { cn } from "@/lib/utils";
-
-function SpotlightImage({ project }: { project: Project }) {
-  const [spotlight, setSpotlight] = useState<{ x: number; y: number } | null>(
-    null
-  );
-
-  return (
-    <div
-      className="relative h-56 overflow-hidden rounded-xl sm:h-72"
-      onMouseMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        setSpotlight({
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top,
-        });
-      }}
-      onMouseLeave={() => setSpotlight(null)}
-    >
-      <PlaceholderImage
-        src={project.imageSrc}
-        alt={`${project.title} preview`}
-        className="h-full w-full"
-        iconClassName="size-14"
-      />
-      {spotlight && (
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity"
-          style={{
-            background: `radial-gradient(220px circle at ${spotlight.x}px ${spotlight.y}px, color-mix(in oklch, var(--primary) 25%, transparent), transparent 70%)`,
-          }}
-        />
-      )}
-    </div>
-  );
-}
 
 export function ProjectModal({
   project,
@@ -70,7 +34,7 @@ export function ProjectModal({
       <DialogContent className="max-w-lg sm:max-w-xl">
         {project && (
           <>
-            <SpotlightImage project={project} />
+            <ProjectImageCarousel images={project.images} alt={project.title} />
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">
                 {project.title}

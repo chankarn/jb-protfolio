@@ -37,7 +37,7 @@ export function ProjectCard({
     >
       <div className="relative h-44 overflow-hidden">
         <PlaceholderImage
-          src={project.imageSrc}
+          src={project.images[0]}
           alt={`${project.title} preview`}
           className="h-full w-full transition-transform duration-300 group-hover:scale-105"
           iconClassName="size-10"
