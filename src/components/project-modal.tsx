@@ -18,6 +18,8 @@ import { ShinyButton } from "@/components/ui/shiny-button";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { useLanguage } from "@/components/providers/language-provider";
 import type { Project } from "@/content/projects";
+import { getProjectTagClassName } from "@/lib/tag-style";
+import { cn } from "@/lib/utils";
 
 function SpotlightImage({ project }: { project: Project }) {
   const [spotlight, setSpotlight] = useState<{ x: number; y: number } | null>(
@@ -83,7 +85,10 @@ export function ProjectModal({
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-md border border-border px-2 py-1 font-mono text-xs"
+                  className={cn(
+                    "rounded-md border px-2 py-1 font-mono text-xs",
+                    getProjectTagClassName(tag)
+                  )}
                 >
                   {tag}
                 </span>

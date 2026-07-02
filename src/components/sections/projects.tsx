@@ -10,6 +10,8 @@ import { useLanguage } from "@/components/providers/language-provider";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { ProjectModal } from "@/components/project-modal";
 import { projects, type Project } from "@/content/projects";
+import { getProjectTagClassName } from "@/lib/tag-style";
+import { cn } from "@/lib/utils";
 
 export function Projects() {
   const { t, lang } = useLanguage();
@@ -63,7 +65,10 @@ export function Projects() {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md border border-border px-2 py-1 font-mono text-xs"
+                      className={cn(
+                        "rounded-md border px-2 py-1 font-mono text-xs",
+                        getProjectTagClassName(tag)
+                      )}
                     >
                       {tag}
                     </span>
