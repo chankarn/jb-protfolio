@@ -17,15 +17,15 @@ export function ShinyButton({
   const Comp = asChild ? Slot.Root : "button";
 
   return (
-    <span className="relative inline-flex overflow-hidden rounded-lg p-[1.5px] motion-reduce:p-0">
+    <span className="group/shiny relative inline-flex overflow-hidden rounded-lg p-[2px] shadow-[0_4px_20px_-4px_var(--primary)] transition-shadow duration-300 hover:shadow-[0_6px_28px_-4px_var(--primary)] motion-reduce:p-0 motion-reduce:shadow-none">
       <span
         aria-hidden="true"
-        className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--primary)_0%,color-mix(in_oklch,var(--primary)_40%,white)_50%,var(--primary)_100%)] motion-reduce:hidden"
+        className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--primary)_0%,white_50%,var(--primary)_100%)] motion-reduce:hidden"
       />
       <Comp
         className={cn(
-          "relative inline-flex h-11 items-center justify-center gap-2 rounded-[calc(0.5rem-1.5px)] bg-background px-6 text-sm font-semibold text-foreground transition-colors hover:bg-muted",
-          "motion-reduce:border motion-reduce:border-primary",
+          "relative inline-flex h-11 items-center justify-center gap-2 rounded-[calc(0.5rem-2px)] bg-background px-6 text-sm font-semibold text-foreground transition-transform duration-200 group-hover/shiny:-translate-y-0.5 group-active/shiny:translate-y-0",
+          "motion-reduce:border-2 motion-reduce:border-primary motion-reduce:transition-colors motion-reduce:hover:bg-muted",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           className
         )}
