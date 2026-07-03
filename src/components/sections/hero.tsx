@@ -15,12 +15,15 @@ import Image from "next/image";
 import { useLanguage } from "@/components/providers/language-provider";
 import { Button } from "@/components/ui/button";
 import { HeroBlob } from "@/components/ui/hero-blob";
+import { HeroDoodles } from "@/components/ui/hero-doodles";
 
 export function Hero() {
   const { t } = useLanguage();
 
   return (
     <section id="hero" className="relative overflow-hidden">
+      <HeroDoodles />
+
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] md:h-[260px]">
         <HeroBlob className="h-full w-full" />
       </div>
