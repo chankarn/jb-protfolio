@@ -1,12 +1,14 @@
-// Decorative organic blob shape behind the Hero photo. Static (no animation);
-// fill is the accent token so it flips between light/dark automatically —
-// never hardcode the hex here. Wave undulates left-to-right (landscape
-// viewBox, wider than tall) per user request, rather than the original
-// top-to-bottom wave. See docs/superpowers/specs/2026-07-04-hero-blob-redesign-design.md.
+// Decorative full-bleed layered wave background for the Hero section. Static
+// (no animation). Three stacked wave layers at different phases/heights, back
+// to front: secondary-accent (deep indigo) -> lighter accent tint -> full
+// accent, giving the gradient/layered look from the reference (an Astralix
+// project banner). Colors are design tokens so they flip with light/dark
+// automatically — never hardcode hexes here. See
+// docs/superpowers/specs/2026-07-04-hero-blob-redesign-design.md.
 export function HeroBlob({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 1000 500"
+      viewBox="0 0 1440 500"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
@@ -14,7 +16,16 @@ export function HeroBlob({ className }: { className?: string }) {
       preserveAspectRatio="none"
     >
       <path
-        d="M0 500V220C150 140 300 260 500 200C700 140 850 260 1000 180V500Z"
+        d="M0 340C240 290 480 390 720 350C960 310 1200 380 1440 330V500H0V340Z"
+        fill="var(--secondary-accent)"
+        opacity="0.55"
+      />
+      <path
+        d="M0 300C220 250 460 330 720 300C980 270 1220 330 1440 290V500H0V300Z"
+        fill="color-mix(in oklch, var(--primary) 55%, white)"
+      />
+      <path
+        d="M0 260C260 220 480 280 720 260C960 240 1200 290 1440 250V500H0V260Z"
         fill="var(--primary)"
       />
     </svg>
