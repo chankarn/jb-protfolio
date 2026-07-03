@@ -8,11 +8,14 @@
 // Hand-picked uneven radii around a rough circle (not evenly rounded) so
 // these read as lumpy, hand-drawn "doodle" blobs rather than plain circles —
 // each vertex sits at a very different distance from center, then the path
-// rounds through the midpoints between vertices for a lopsided, bumpy outline.
+// rounds through the midpoints between vertices for a lopsided, bumpy
+// outline. 8 vertices (not 6) with gentler radius swings — 6 points with
+// big alternating radii read as a rounded triangle/hexagon rather than an
+// organic blob.
 const SHAPES = [
-  "M68.5 53.5Q82 42 68 31.5Q54 21 38.5 15Q23 9 22.5 25.5Q22 42 21.5 60Q21 78 38 71.5Q55 65 68.5 53.5Z",
-  "M65.5 56.7Q72 42 67.5 23.8Q63 5.6 47 14.25Q31 22.9 18.5 32.45Q6 42 19.5 49.8Q33 57.6 46 64.5Q59 71.4 65.5 56.7Z",
-  "M69.5 58.45Q78 42 65 33.35Q52 24.7 37 16.05Q22 7.4 18 24.7Q14 42 22.5 51.55Q31 61.1 46 68Q61 74.9 69.5 58.45Z",
+  "M71.9 51.9Q82 42 72.6 31.4Q63.2 20.8 52.6 13.4Q42 6 32.8 14.8Q23.6 23.6 11.8 32.8Q0 42 9.7 53.3Q19.4 64.6 30.7 72.3Q42 80 51.9 70.9Q61.8 61.8 71.9 51.9Z",
+  "M70.75 54.75Q74 42 72.85 27.15Q71.7 12.3 56.85 13.15Q42 14 28.55 14.55Q15.1 15.1 16.55 28.55Q18 42 15.85 56.15Q13.7 70.3 27.85 71.15Q42 72 54.75 69.75Q67.5 67.5 70.75 54.75Z",
+  "M71.3 53.3Q78 42 69.2 32.8Q60.4 23.6 51.2 11.8Q42 0 31.4 10.4Q20.8 20.8 14.4 31.4Q8 42 16.5 50.5Q25 59 33.5 70.5Q42 82 53.3 73.3Q64.6 64.6 71.3 53.3Z",
 ] as const;
 
 interface Doodle {
@@ -63,15 +66,15 @@ export function HeroDoodles() {
             transform: `rotate(${d.rotate}deg)`,
           }}
         >
-          {/* Shadow copy: same shape, offset behind, dark+low-opacity so it
-              reads as a sticker-style drop shadow in both light and dark
-              mode rather than flipping with foreground/muted tokens. */}
+          {/* Shadow copy: same shape, offset behind, filled a darker tint of
+              its own tone (not flat black/gray) so it reads as a deeper
+              shade of the same color rather than a muddy neutral smudge. */}
           {d.shadow && (
             <path
               d={SHAPES[d.shape]}
               transform="translate(7 7)"
-              fill="black"
-              fillOpacity={0.16}
+              fill={`color-mix(in oklch, var(--${d.tone}) 55%, black)`}
+              fillOpacity={0.4}
             />
           )}
           <path
