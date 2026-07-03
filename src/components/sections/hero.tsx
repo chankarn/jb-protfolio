@@ -21,7 +21,7 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[120px] md:h-[220px]">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] md:h-[260px]">
         <HeroBlob className="h-full w-full" />
       </div>
 
