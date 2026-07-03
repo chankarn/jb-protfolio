@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
-import { ShinyButton } from "@/components/ui/shiny-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -104,10 +104,14 @@ export function ContactForm() {
         </p>
       )}
 
-      <ShinyButton type="submit" disabled={status === "sending"}>
+      <Button
+        type="submit"
+        disabled={status === "sending"}
+        className="h-11 rounded-lg px-6 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+      >
         {status === "sending" && <Loader2 className="size-4 animate-spin" />}
         {status === "sending" ? t("contact.sending") : t("contact.send")}
-      </ShinyButton>
+      </Button>
 
       <p className="text-xs text-muted-foreground">{t("contact.privacyNote")}</p>
     </form>
