@@ -23,6 +23,8 @@ interface Doodle {
   shape: 0 | 1 | 2;
   variant: "outline" | "fill";
   tone: "primary" | "secondary-accent";
+  /** Duplicates the shape offset behind itself, like a sticker drop-shadow. */
+  shadow?: boolean;
 }
 
 // Positions deliberately avoid the text block's bounding area (roughly
@@ -31,14 +33,14 @@ interface Doodle {
 // Positions over the photo/wave are fine since those are opaque and simply
 // cover the doodle (z-0, painted first).
 const DOODLES: Doodle[] = [
-  { top: "8%", left: "6%", size: 56, rotate: -12, shape: 0, variant: "outline", tone: "primary" },
+  { top: "8%", left: "6%", size: 56, rotate: -12, shape: 0, variant: "outline", tone: "primary", shadow: true },
   { top: "12%", left: "90%", size: 60, rotate: 18, shape: 1, variant: "fill", tone: "secondary-accent" },
   { top: "5%", left: "42%", size: 34, rotate: 10, shape: 2, variant: "outline", tone: "primary" },
-  { top: "85%", left: "12%", size: 46, rotate: -20, shape: 1, variant: "fill", tone: "primary" },
+  { top: "85%", left: "12%", size: 46, rotate: -20, shape: 1, variant: "fill", tone: "primary", shadow: true },
   { top: "60%", left: "52%", size: 42, rotate: -8, shape: 0, variant: "outline", tone: "secondary-accent" },
   { top: "18%", left: "66%", size: 30, rotate: 25, shape: 2, variant: "fill", tone: "secondary-accent" },
   { top: "15%", left: "24%", size: 26, rotate: 30, shape: 1, variant: "outline", tone: "secondary-accent" },
-  { top: "32%", left: "78%", size: 36, rotate: -15, shape: 0, variant: "fill", tone: "primary" },
+  { top: "32%", left: "78%", size: 36, rotate: -15, shape: 0, variant: "fill", tone: "primary", shadow: true },
   { top: "70%", left: "50%", size: 24, rotate: 12, shape: 2, variant: "outline", tone: "primary" },
 ];
 
@@ -51,7 +53,7 @@ export function HeroDoodles() {
       {DOODLES.map((d, i) => (
         <svg
           key={i}
-          viewBox="0 0 84 84"
+          viewBox="-10 -10 104 104"
           width={d.size}
           height={d.size}
           style={{
@@ -61,6 +63,17 @@ export function HeroDoodles() {
             transform: `rotate(${d.rotate}deg)`,
           }}
         >
+          {/* Shadow copy: same shape, offset behind, dark+low-opacity so it
+              reads as a sticker-style drop shadow in both light and dark
+              mode rather than flipping with foreground/muted tokens. */}
+          {d.shadow && (
+            <path
+              d={SHAPES[d.shape]}
+              transform="translate(7 7)"
+              fill="black"
+              fillOpacity={0.16}
+            />
+          )}
           <path
             d={SHAPES[d.shape]}
             fill={d.variant === "fill" ? `var(--${d.tone})` : "none"}
