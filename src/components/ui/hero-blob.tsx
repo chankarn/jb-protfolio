@@ -11,7 +11,7 @@ export function HeroBlob({ className }: { className?: string }) {
       aria-hidden="true"
     >
       <path
-        d="M600 0H180C120 120 260 180 300 260C340 340 180 400 220 500C260 600 460 560 520 660C560 728 600 760 600 800V0Z"
+        d="M600 0H210C300 60 300 180 260 280C220 380 160 380 200 480C240 580 320 560 300 660C280 740 420 760 600 800V0Z"
         fill="var(--primary)"
       />
     </svg>
