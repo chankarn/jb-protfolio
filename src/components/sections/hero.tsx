@@ -47,7 +47,7 @@ export function Hero() {
         </div>
 
         <div className="relative h-[280px] w-full md:h-[520px]">
-          <HeroBlob className="absolute inset-0 h-full w-full md:w-[140%] md:translate-x-[15%]" />
+          <HeroBlob className="absolute inset-x-0 top-1/2 h-[55%] w-full -translate-y-1/2 md:w-[145%] md:translate-x-[12%]" />
           <Image
             src="/Gemini_Generated_Image_sxf1m4sxf1m4sxf1.png"
             alt="Chanakarn Susinraworn"
