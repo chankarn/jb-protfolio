@@ -37,6 +37,9 @@ const DOODLES: Doodle[] = [
   { top: "85%", left: "12%", size: 46, rotate: -20, shape: 1, variant: "fill", tone: "primary" },
   { top: "60%", left: "52%", size: 42, rotate: -8, shape: 0, variant: "outline", tone: "secondary-accent" },
   { top: "18%", left: "66%", size: 30, rotate: 25, shape: 2, variant: "fill", tone: "secondary-accent" },
+  { top: "15%", left: "24%", size: 26, rotate: 30, shape: 1, variant: "outline", tone: "secondary-accent" },
+  { top: "32%", left: "78%", size: 36, rotate: -15, shape: 0, variant: "fill", tone: "primary" },
+  { top: "70%", left: "50%", size: 24, rotate: 12, shape: 2, variant: "outline", tone: "primary" },
 ];
 
 export function HeroDoodles() {
