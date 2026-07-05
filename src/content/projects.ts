@@ -4,11 +4,11 @@
 // role and aren't tied to a client NDA, so they're safe to publish as-is;
 // live/repo URLs are unknown for now and can be added once available.
 //
-// MOCK IMAGES: the URLs below are generic Unsplash stock photos (dashboards/
-// code on screen) standing in for real product screenshots, at the user's
-// request, to see the carousel with actual images instead of placeholder
-// boxes. Swap these for real screenshots before launch — stock photos don't
-// represent what was actually built.
+// Car Rental Dashboard and POS System: the old codebases are no longer
+// accessible (confirmed 2026-07-05), so real screenshots can't be captured.
+// Generic Unsplash stock photos were tried as a mock but deliberately reverted
+// to empty (placeholder box) — a stock photo of an unrelated dashboard is
+// misleading portfolio content, worse than an honest "no image yet" box.
 export interface Project {
   id: string;
   title: string;
@@ -30,11 +30,7 @@ export const projects: Project[] = [
     description_th:
       "แดชบอร์ดสำหรับจัดการงานเช่ารถ ครอบคลุมการจองของลูกค้า มอบหมายคนขับ ติดตามเคส และรายงานรายได้/ผลงานรายวัน รายเดือน และภาพรวม",
     tags: ["Next.js", "TypeScript", "Material UI", "Express.js"],
-    images: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
-    ],
+    images: ["", "", ""],
     confidentialityChecked: true,
   },
   {
@@ -45,11 +41,7 @@ export const projects: Project[] = [
     description_th:
       "ระบบ POS สำหรับร้านผับ ครอบคลุมบทบาท admin ครัว และแคชเชียร์ มีระบบจองห้อง ขายสินค้า สั่งอาหารในห้อง และรายงานยอดขาย/สต๊อกจากแดชบอร์ดกลาง",
     tags: ["React.js", "Node.js", "MySQL"],
-    images: [
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
-    ],
+    images: ["", "", ""],
     confidentialityChecked: true,
   },
   {
