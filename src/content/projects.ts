@@ -52,4 +52,20 @@ export const projects: Project[] = [
     ],
     confidentialityChecked: true,
   },
+  {
+    id: "maoleaw",
+    title: "MaoLeaw — Event & Bill Splitter",
+    description_en:
+      "A LINE-based event & fair-bill-splitting app for friend groups: track who's coming, split drink costs so non-drinkers don't subsidize alcohol, and track who's paid. LIFF web for members, a separate admin dashboard for organizers, backed by a NestJS API and PostgreSQL.",
+    description_th:
+      "แอปจัดงานเลี้ยงและหารบิลแบบแฟร์ผ่าน LINE สำหรับกลุ่มเพื่อน — เก็บข้อมูลใครจะมา หารค่าเหล้า/เบียร์เฉพาะคนที่กิน (คนไม่กินแอลไม่ต้องช่วยจ่าย) และติดตามว่าใครจ่ายแล้ว มีทั้งฝั่ง LIFF สำหรับสมาชิกและ Admin dashboard แยกสำหรับผู้จัดงาน หนุนหลังด้วย NestJS API และ PostgreSQL",
+    tags: ["Next.js", "NestJS", "Prisma", "PostgreSQL", "LINE LIFF", "Turborepo"],
+    images: [
+      "/Maoleaw/Screenshot%202569-07-04%20at%2017.25.36.png",
+      "/Maoleaw/Screenshot%202569-07-04%20at%2017.26.18.png",
+      "/Maoleaw/Screenshot%202569-07-04%20at%2017.30.09.png",
+      "/Maoleaw/Screenshot%202569-07-04%20at%2017.30.51.png",
+    ],
+    confidentialityChecked: true,
+  },
 ];
