@@ -26,9 +26,6 @@ function AboutCopy() {
       <p className="text-sm text-muted-foreground md:text-base">
         {t("about.body")}
       </p>
-      <p className="mt-4 font-mono text-xs text-muted-foreground">
-        [ {t("about.placeholderNote")} ]
-      </p>
     </div>
   );
 }
@@ -76,12 +73,16 @@ export function About() {
           <AboutCopy />
           <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
             {aboutImages.map((image, i) => (
-              <PlaceholderImage
+              <div
                 key={i}
-                src={image.src}
-                alt={image.alt}
-                className="aspect-[4/3] rounded-xl"
-              />
+                className="relative aspect-[4/3] overflow-hidden rounded-xl"
+              >
+                <PlaceholderImage
+                  src={image.src}
+                  alt={image.alt}
+                  className="h-full w-full"
+                />
+              </div>
             ))}
           </div>
         </div>
