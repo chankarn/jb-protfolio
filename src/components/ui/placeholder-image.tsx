@@ -13,6 +13,7 @@ interface PlaceholderImageProps {
   width?: number;
   height?: number;
   iconClassName?: string;
+  onLoad?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
 export function PlaceholderImage({
@@ -23,6 +24,7 @@ export function PlaceholderImage({
   width,
   height,
   iconClassName,
+  onLoad,
 }: PlaceholderImageProps) {
   if (src) {
     return (
@@ -32,6 +34,7 @@ export function PlaceholderImage({
         fill={fill}
         width={fill ? undefined : width}
         height={fill ? undefined : height}
+        onLoad={onLoad}
         className={cn("object-cover", className)}
       />
     );
