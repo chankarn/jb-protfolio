@@ -35,7 +35,7 @@ export function ProjectCard({
       transition={{ duration: 0.35 }}
       className="group overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-primary/50"
     >
-      <div className="relative h-44 overflow-hidden">
+      <div className="relative h-56 overflow-hidden">
         <PlaceholderImage
           src={project.images[0]}
           alt={`${project.title} preview`}
@@ -66,7 +66,7 @@ export function ProjectCard({
             {project.title}
           </button>
         </h3>
-        <p className="mb-3 text-sm text-muted-foreground">
+        <p className="mb-3 truncate text-sm text-muted-foreground">
           {lang === "th" ? project.description_th : project.description_en}
         </p>
         <div className="mb-4 flex flex-wrap gap-2">
