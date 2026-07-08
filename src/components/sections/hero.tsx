@@ -11,7 +11,13 @@
 // own, so it doesn't add on top of that 90vh — the wave and photo, both
 // absolutely positioned against the section, resolve against that single
 // height instead of two stacked ones.
+//
+// First-load entrance: text, wave, then photo fade/slide in one after another
+// (same fade+slide-up treatment as the Skills bento cards) instead of
+// everything appearing at once. Runs once on mount, not on scroll-into-view,
+// since the hero is already on screen at first paint.
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
 import { Button } from "@/components/ui/button";
 import { HeroBlob } from "@/components/ui/hero-blob";
@@ -20,15 +26,26 @@ import { HeroBlob } from "@/components/ui/hero-blob";
 
 export function Hero() {
   const { t } = useLanguage();
+  const reduceMotion = useReducedMotion();
 
   return (
     <section id="hero" className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] md:h-[260px]">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.25, ease: "easeOut" }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] md:h-[260px]"
+      >
         <HeroBlob className="h-full w-full" />
-      </div>
+      </motion.div>
 
       <div className="relative z-10 mx-auto flex min-h-[90vh] w-full max-w-6xl flex-col justify-center px-6 py-16 md:py-0">
-        <div className="max-w-xl">
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="max-w-xl"
+        >
           <p className="mb-4 font-mono text-sm uppercase tracking-widest text-muted-foreground">
             {t("hero.greeting")}
           </p>
@@ -54,16 +71,23 @@ export function Hero() {
               <a href="#contact">{t("hero.contact")}</a>
             </Button>
           </div>
-        </div>
+        </motion.div>
 
-        <Image
-          src="/Gemini_Generated_Image_sxf1m4sxf1m4sxf1.png"
-          alt="Chanakarn Susinraworn"
-          width={1684}
-          height={2528}
-          priority
-          className="relative z-10 mt-10 h-[240px] w-auto self-center object-contain md:absolute md:inset-y-auto md:right-10 md:bottom-0 md:mt-0 md:h-[85%] md:self-auto"
-        />
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
+          className="relative z-10 mt-10 h-[240px] w-auto self-center md:absolute md:inset-y-auto md:right-10 md:bottom-0 md:mt-0 md:h-[85%] md:self-auto"
+        >
+          <Image
+            src="/Gemini_Generated_Image_sxf1m4sxf1m4sxf1.png"
+            alt="Chanakarn Susinraworn"
+            width={1684}
+            height={2528}
+            priority
+            className="h-full w-auto object-contain"
+          />
+        </motion.div>
       </div>
     </section>
   );
