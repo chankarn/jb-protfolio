@@ -26,11 +26,14 @@
   },
   "skills": {
     "heading": "Skills",
+    "all": "All",
     "categories": {
       "languages": "Languages",
       "frameworks": "Frameworks",
       "tools": "Tools"
-    }
+    },
+    "usedIn": "Used in",
+    "notUsedYet": "Not used in a showcased project yet"
   },
   "experience": {
     "heading": "Experience",

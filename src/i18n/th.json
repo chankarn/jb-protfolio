@@ -26,11 +26,14 @@
   },
   "skills": {
     "heading": "ทักษะ",
+    "all": "ทั้งหมด",
     "categories": {
       "languages": "ภาษาโปรแกรม",
       "frameworks": "เฟรมเวิร์ก",
       "tools": "เครื่องมือ"
-    }
+    },
+    "usedIn": "ใช้ในโปรเจค",
+    "notUsedYet": "ยังไม่ได้ใช้ในโปรเจคที่แสดงไว้"
   },
   "experience": {
     "heading": "ประสบการณ์ทำงาน",

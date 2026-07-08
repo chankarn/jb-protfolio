@@ -19,7 +19,14 @@ export const skills: Skill[] = [
   { name: "React Native", category: "frameworks" },
   { name: "Next.js", category: "frameworks" },
   { name: "Node.js", category: "frameworks" },
+  { name: "Express.js", category: "frameworks" },
+  { name: "NestJS", category: "frameworks" },
+  { name: "Material UI", category: "frameworks" },
   { name: "MySQL", category: "tools" },
+  { name: "PostgreSQL", category: "tools" },
+  { name: "Prisma", category: "tools" },
+  { name: "Turborepo", category: "tools" },
+  { name: "LINE LIFF", category: "tools" },
 ];
 
 export const SKILL_CATEGORY_ORDER: Skill["category"][] = [
