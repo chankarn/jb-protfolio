@@ -13,7 +13,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { GithubIcon } from "@/components/ui/brand-icons";
-import { ShinyButton } from "@/components/ui/shiny-button";
 import { BlurText } from "@/components/ui/blur-text";
 import { ProjectImageCarousel } from "@/components/project-image-carousel";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -67,17 +66,15 @@ export function ProjectModal({
             {(project.liveUrl || project.repoUrl) && (
               <div className="flex flex-wrap gap-3 pt-2">
                 {project.liveUrl && (
-                  <ShinyButton asChild>
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="gap-2"
-                    >
-                      <ExternalLink className="size-4" />
-                      {t("projects.live")}
-                    </a>
-                  </ShinyButton>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-11 items-center gap-2 rounded-lg border border-border px-5 text-sm font-semibold transition-colors hover:border-primary"
+                  >
+                    <ExternalLink className="size-4" />
+                    {t("projects.live")}
+                  </a>
                 )}
                 {project.repoUrl && (
                   <a
