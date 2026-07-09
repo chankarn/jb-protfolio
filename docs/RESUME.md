@@ -1,7 +1,7 @@
 # RESUME.md — Session Resume Briefing
 
 Project: **jb-protfolio** — bilingual (TH/EN) Software Engineer portfolio site for Chanakarn Susinraworn, built for job hunting.
-Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **9 tracked files modified + 2 new untracked files, uncommitted** as of 2026-07-09 (see `git status`/`git diff --stat`). Last commit on `main`: `0c1486d` (merge). This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
+Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **working tree clean, 4 commits ahead of `origin/main`** as of 2026-07-09 (not yet pushed). Last commit: `4ba1f4b`. This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
 
 ## 1. Pipeline position
 
@@ -12,7 +12,7 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **9 
 | UX/UI Design | ✅ | `docs/UXUI_DESIGN.md` |
 | Clickable prototype | ✅ | `docs/mockups/portfolio-prototype.html` |
 | Scaffold | ✅ | early commit history |
-| Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `0c1486d` + uncommitted work this session |
+| Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `4ba1f4b` |
 | QA | ⬜ not started | no test files anywhere (`find . -iname "*.test.*" -o -iname "*.spec.*"` excluding `node_modules` → empty), no test runner in `package.json` |
 | Devops/deploy | ⬜ not started | no `vercel.json`, no live URL for this site itself; `.github/workflows/ci.yml` exists (`npm ci` → lint → typecheck → build) but nothing deploys |
 
@@ -41,7 +41,7 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **9 
 
 **In progress / partially done:**
 - **Contact form email delivery still not functional end-to-end** — no `.env.local` exists (only `.env.example`, all three values blank: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`). Route returns a handled `502 delivery_failed`, not a crash.
-- **This session's Skills/Experience/CircleMenu work is uncommitted.** `git status` shows 9 modified tracked files (`project-card.tsx`, `sections/experience.tsx`, `skills-bento.tsx`, `content/experience.ts`, `content/projects.ts`, `content/skills.ts`, `i18n/en.json`, `i18n/th.json`, `lib/skill-icons.ts`) plus 2 new untracked files (`components/ui/circle-menu.tsx`, `lib/experience-projects.ts`). Nothing has been committed since `0c1486d`. **User has not yet asked to commit this batch of work** — confirm before committing/pushing.
+- This session's Skills/Experience/CircleMenu/job-history work is now committed (4 commits: `5b1977b`, `ec80e85`, `4ba97b5`, `4ba1f4b`) but **not pushed** — `main` is 4 commits ahead of `origin/main`. Confirm with the user before pushing.
 - Car Rental Dashboard / POS System / Trident IMS still ship as honest placeholder boxes (no real screenshots) — this is a deliberate, previously-confirmed choice (old codebases inaccessible; Trident IMS awaiting client sign-off), not an oversight.
 
 **Not started:**
@@ -76,7 +76,7 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **9 
 
 ## 5. Immediate next step
 
-**Single most obvious next action:** ask the user whether to **commit the current uncommitted work** (9 modified files + 2 new files — Skills/Experience rebuild, CircleMenu, job-history correction, cursor-pointer fixes, ProjectCard truncation, Hero animation). Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean — but it's a substantial, coherent batch of changes sitting uncommitted, and the user has been driving each individual feature request without yet saying "commit" for this round. Don't commit without asking first; the user has previously committed work explicitly, in logically-separated commits per feature (see recent git log for the granularity they expect — e.g. `2616057`, `3c3bbd1`, `a1ff4d9`, `f275ad9` were four separate commits for four separate pieces of one session's work).
+**Single most obvious next action:** ask the user whether to **push the 4 committed-but-unpushed commits** (`5b1977b` job history, `ec80e85` Experience CircleMenu, `4ba97b5` Skills polish/cursor-pointer, `4ba1f4b` this doc) to `origin/main`. Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean — but don't push without asking first, same as any other push.
 
 If the user wants a next step that's pure code with no new decisions needed from them: **start a `/qa` pass on `POST /api/contact`** (still the one part of this codebase worth unit-testing — validation/honeypot/rate-limit/Resend-failure branches, per `docs/SA_BLUEPRINT.md` §5) — no tests exist yet, same as last briefing.
 
