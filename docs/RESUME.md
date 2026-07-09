@@ -1,7 +1,7 @@
 # RESUME.md — Session Resume Briefing
 
 Project: **jb-protfolio** — bilingual (TH/EN) Software Engineer portfolio site for Chanakarn Susinraworn, built for job hunting.
-Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, working tree clean, in sync with `origin/main` as of 2026-07-02.
+Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **9 tracked files modified + 2 new untracked files, uncommitted** as of 2026-07-09 (see `git status`/`git diff --stat`). Last commit on `main`: `0c1486d` (merge). This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
 
 ## 1. Pipeline position
 
@@ -11,84 +11,92 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, work
 | SA Blueprint | ✅ | `docs/SA_BLUEPRINT.md` |
 | UX/UI Design | ✅ | `docs/UXUI_DESIGN.md` |
 | Clickable prototype | ✅ | `docs/mockups/portfolio-prototype.html` |
-| Scaffold | ✅ | commit `1d0dfde` |
-| Dev (feature build) | ✅ mostly — one item genuinely unimplemented, see §2 | commits `31e2ef9` → `d75a2a7` |
-| QA | ⬜ not started | no test files anywhere in the repo (`find . -iname "*.test.*" -o -iname "*.spec.*"` → empty), no test runner in `package.json` |
-| Devops/deploy | ⬜ not started | no `vercel.json`, no evidence of a live URL; `.github/workflows/ci.yml` exists (install → lint → typecheck → build) but nothing deploys |
+| Scaffold | ✅ | early commit history |
+| Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `0c1486d` + uncommitted work this session |
+| QA | ⬜ not started | no test files anywhere (`find . -iname "*.test.*" -o -iname "*.spec.*"` excluding `node_modules` → empty), no test runner in `package.json` |
+| Devops/deploy | ⬜ not started | no `vercel.json`, no live URL for this site itself; `.github/workflows/ci.yml` exists (`npm ci` → lint → typecheck → build) but nothing deploys |
 
-**Doc hygiene note:** root `README.md`'s own "Status" section still says *"Repo skeleton only — no feature code yet."* That line is stale — everything below in this briefing shows otherwise. Cheap to fix (one paragraph) but hasn't been touched since scaffold. Don't trust that one section; the rest of the README (setup commands, project structure) is accurate.
+**Doc hygiene note:** root `README.md`'s "Status" section still says *"Repo skeleton only — no feature code yet."* Still stale (was already flagged stale on 2026-07-02; nobody's fixed it since). Don't trust that one section; the rest of the README is fine.
 
 ## 2. Done / in-progress / not-started
 
-**Done** (verified this session: `npm run lint`, `npx tsc --noEmit`, `npm run build` all pass clean):
-- All sections wired into `src/app/page.tsx`: Navbar, Hero, About (Zoom Parallax), Projects, Skills, Experience, Contact, Footer.
-- i18n: TH/EN toggle via `src/components/providers/language-provider.tsx` + `src/i18n/{en,th}.json`, persisted to `localStorage`, browser-locale default.
-- Theme: light/dark via `next-themes`, toggle in `src/components/theme-toggle.tsx`.
-- Contact form + `POST /api/contact` (`src/app/api/contact/route.ts`): zod validation (`src/lib/contact-schema.ts`), honeypot, in-memory IP rate limit (`src/lib/rate-limit.ts`), Resend send, HTML-escaped body.
-- Project details modal (`src/components/project-modal.tsx`): Radix/shadcn Dialog, spotlight cursor-tracking hover on the image, bilingual copy, conditional live/repo links.
-- **Resume/CV download IS wired** (verified project-wide with `grep -rn "resume.pdf\|RESUME_URL" src/ public/` this session, not just a spot-check): `src/content/contact.ts` exports `RESUME_URL = "/resume.pdf"`, consumed in `src/components/sections/contact.tsx:29-37`; `public/resume.pdf` is a real 376KB file. **This was previously misreported as missing in an earlier test run of the `handoff` skill — that was wrong. Trust this grep-verified line instead.**
-- Real content in place (commit `4b6b0eb`): `src/content/{experience,skills,projects,contact}.ts` sourced from the owner's actual resume, not mock data.
-- Zoom Parallax mobile fix (`7d6d4a4`): falls back to the same static-grid treatment used for `prefers-reduced-motion` on viewports ≤767px, via `src/hooks/use-media-query.ts`. Desktop scroll-jacking (2400px track at 800px viewport height) unchanged.
-- ThemeToggle hydration fix (`804e21a`) — see §4, this one's important not to undo.
+**Done** (verified this session: `npm run lint`, `npx tsc --noEmit`, `npm run build` all pass clean — see §6):
+
+- Core sections wired in `src/app/page.tsx`: Navbar, Hero, About (Zoom Parallax), Projects, Skills, Experience, Contact, Footer.
+- i18n (TH/EN), theme (light/dark), contact form + `POST /api/contact` (Resend, zod, honeypot, rate-limit) — all unchanged from before, still working.
+- Resume/CV download still wired (`RESUME_URL = "/resume.pdf"` in `src/content/contact.ts`, real file at `public/resume.pdf`).
+- **Projects content is now real and much larger** — 7 entries in `src/content/projects.ts`: `car-rental-dashboard`, `pub-pos-system` (both still placeholder-box images, no real screenshots — old codebases inaccessible), `maoleaw` (real screenshots), `siph-proud-point`, `astralix`, `work-joy-station` (all three: real screenshots, `liveUrl` set on the latter two), `trident-ims` (placeholder — client hasn't signed off on screenshots yet, see in-file comment). Added via a merge from another machine (commit `10dad56`) plus this session's own edits.
+- **Skills section fully rebuilt this session**: the old plain tag-list + an experimental marquee were both removed. Now: `SkillsBento` (`src/components/skills-bento.tsx`) — a tabbed (`AnimatedTabs`, All/Languages/Frameworks/Tools) bento grid of skill cards with live brand logos (Simple Icons CDN, verified per-slug before wiring). Cards with a matching project are a `Popover` (Radix) trigger listing linked project(s); picking one calls `ProjectSpotlightProvider.requestProject(id)`. 21 skills now (added Express.js, NestJS, Material UI, PostgreSQL, Prisma, Turborepo, LINE LIFF, Docker, Zustand — Zustand has no Simple Icons logo, confirmed via live 404 check, renders name-only).
+- **Cross-section "spotlight" navigation** (`src/components/providers/project-spotlight-provider.tsx`): a skill or an Experience entry can ask the Projects section to scroll into view and open a specific project's modal, without lifting Projects' own `selected` state up. Wired into `src/app/layout.tsx`.
+- **`CircleMenu` component built and adapted** (`src/components/ui/circle-menu.tsx`) from a 21st.dev-style reference — a trigger that fans items out along a configurable arc on a spring. Tried in Skills first (didn't work — got clipped by neighboring grid cards in the dense bento layout, reverted to Popover there). **Currently used only in Experience** — see below.
+- **Experience section overhauled**:
+  - Timeline line was rendering as broken per-entry segments (each entry had its own `border-l-2`, gaps at every `space-y-8` seam) — now a single continuous absolutely-positioned line spanning the whole list.
+  - Entries fade/slide in on scroll, staggered by index (same treatment as Skills bento cards).
+  - Added a real "Car Rental" freelance job (2023, before Easset) per user's actual work history.
+  - **Job history corrected**: user left Easset 2025-04, joined **Codeplay** (own agency, `code-play.net`) 2025-08, full-time since. `experience.ts` now has 3 entries (Codeplay present, Easset 2024–2025-04, Freelance 2023), rendered most-recent-first. About-section copy (`about.body` in both `en.json`/`th.json`) updated from "at Easset Company Limited" to "at Codeplay".
+  - Where an entry produced a project (`Project.experienceId` matches an `ExperienceEntry.id` — set on 5 of the 7 projects), a `CircleMenu` trigger sits at the entry's **middle-right edge** (not inline below the text; text gets a `pr-14` gutter reserved so it never collides with the trigger). Fans in a right-opening semicircle (`arc=180, startAngle=-90, radius=56, itemSize=28`) — icon-only circles; hovering one shows its project title in a tooltip anchored to **that item's own right side** (not below it, and not a single shared tooltip) — this went through two wrong iterations before landing here, see §4.
+- Cursor fix: plain `<button>` elements site-wide had no `cursor-pointer` (browser default for `<button>` is an arrow, not a hand — a real, easy-to-miss gap). Added to: Skills bento cards, ProjectCard's title/View-Details buttons, Skills popover project links, Experience's CircleMenu trigger/items.
+- ProjectCard: description truncated to one line (`truncate`), image area grown 176px→224px — more visual-first, per user request.
+- Hero: staggered entrance animation on first load (text → wave → photo, ~0.2s apart), same fade+slide-up idiom as the bento cards. Runs once on mount (not scroll-triggered, since Hero is already on screen at first paint).
 
 **In progress / partially done:**
-- **Contact form email delivery is not functional end-to-end.** Code path is complete and correct, but no `.env.local` exists in the repo (only `.env.example`, all three values blank). Without `RESEND_API_KEY`, the route returns `502 { ok:false, error:"delivery_failed" }` — a deliberate, handled failure, not a crash, but real email currently cannot send.
-- **Project screenshots and About-section photos are still placeholders.** `imageSrc: ""` on both entries in `src/content/projects.ts`; `src: ""` on all 5 entries in `src/content/about-images.ts`. The placeholder-box UI (`src/components/ui/placeholder-image.tsx`) renders correctly in the meantime — this isn't broken, just unfinished content.
-- **`liveUrl`/`repoUrl` are unset on both published projects** (Car Rental Dashboard, POS System) — the type supports them (`src/content/projects.ts`), the UI conditionally renders the links when present, they're just empty right now.
+- **Contact form email delivery still not functional end-to-end** — no `.env.local` exists (only `.env.example`, all three values blank: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`). Route returns a handled `502 delivery_failed`, not a crash.
+- **This session's Skills/Experience/CircleMenu work is uncommitted.** `git status` shows 9 modified tracked files (`project-card.tsx`, `sections/experience.tsx`, `skills-bento.tsx`, `content/experience.ts`, `content/projects.ts`, `content/skills.ts`, `i18n/en.json`, `i18n/th.json`, `lib/skill-icons.ts`) plus 2 new untracked files (`components/ui/circle-menu.tsx`, `lib/experience-projects.ts`). Nothing has been committed since `0c1486d`. **User has not yet asked to commit this batch of work** — confirm before committing/pushing.
+- Car Rental Dashboard / POS System / Trident IMS still ship as honest placeholder boxes (no real screenshots) — this is a deliberate, previously-confirmed choice (old codebases inaccessible; Trident IMS awaiting client sign-off), not an oversight.
 
 **Not started:**
-- No `/qa` pass — no tests exist. `docs/SA_BLUEPRINT.md` §5 names `/api/contact`'s validation/honeypot/rate-limit/Resend-failure branches as the one thing worth testing.
-- No `/devops` pass — no CI deploy step, no hosting decided in config (docs name Vercel free tier as the target, per user confirmation, but nothing's set up).
-- WCAG AA contrast check on the accent color (`#D97757` light / `#E08661` dark) used for text/icons, flagged in `docs/UXUI_DESIGN.md` §5, never run.
-- Extra 21st.dev-style micro-interactions beyond what's shipped (ShinyButton, Spotlight Card) — Tilt Cards, Marquee, Bento Grid, Blur Text Reveal, Animated Grid/Beam were all discussed during brainstorming and explicitly left open for `/dev`-time choice; none have been picked up.
-- README's stale "Status" section (see §1).
-- Only one Experience entry (Easset Company Limited, current role). If earlier jobs exist, they aren't in `src/content/experience.ts` yet.
+- No `/qa` pass — no tests exist anywhere.
+- No `/devops` pass — no CI deploy step, no hosting set up (Vercel free tier is the named target, per earlier user confirmation, nothing configured yet).
+- WCAG AA contrast check on the accent color, flagged in `docs/UXUI_DESIGN.md` §5, never run.
+- README's stale "Status" section (see §1) — still not fixed.
 
 ## 3. Decisions already locked (don't re-litigate)
 
-- **Stack:** Next.js 16.2.9 (App Router, Turbopack), React 19.2.4, TypeScript, Tailwind CSS v4, shadcn/ui (Nova preset — Lucide + Geist, Radix-based), Framer Motion, next-themes, zod, Resend. No database. Full rationale: `docs/SA_BLUEPRINT.md` §0.
-- **Fonts:** Geist Sans/Mono (via `next/font/google`) + IBM Plex Sans Thai for Thai glyphs — already wired in `src/app/layout.tsx` and `globals.css`. Don't substitute.
-- **Design tokens** (colors/spacing/radius) are locked in `docs/UXUI_DESIGN.md` §1 and live as CSS custom properties in `src/app/globals.css` — extend, don't re-pick.
-- **Contact scope:** both a form AND direct channel links are shown (user-confirmed, not either/or) — `docs/UXUI_DESIGN.md` §4.
-- **No persistence for contact submissions** — Resend send-only, no DB (`docs/SA_BLUEPRINT.md` §3-4).
-- **lucide-react dropped GitHub/LinkedIn brand icons** (trademark reasons) — inline replacements live in `src/components/ui/brand-icons.tsx`; reuse that file, don't pull in a new icon dependency for these two.
-- **Deployment target: Vercel free tier**, confirmed by the user — constrains nothing about the code (the API route already runs as a standard serverless function), just means `/devops` shouldn't reconsider hosting.
+- **Stack:** Next.js 16.2.9 (App Router, Turbopack), React 19.2.4, TypeScript, Tailwind CSS v4, shadcn/ui (Nova preset), Framer Motion 12, next-themes, zod, Resend, `radix-ui` (single unified package, not per-component `@radix-ui/react-*`). No database. Full rationale: `docs/SA_BLUEPRINT.md` §0.
+- **Design tokens** live as CSS custom properties in `src/app/globals.css` (`--primary` orange, `--secondary-accent` deep indigo added mid-project) — extend, don't re-pick. Full spec: `docs/UXUI_DESIGN.md` §1.
+- **Job history is user-confirmed, not inferred:** Codeplay (own agency) is the *current* job (2025-08–present), not a rebrand of Easset. Easset ended 2025-04. There's a real ~4-month gap (2025-04 to 2025-08) between them — don't "fix" or fill that gap, it's accurate as given.
+- **`experienceId` on `Project` (new this session)** links a project to the job that produced it — only set where unambiguous (5 of 7 projects have it). Don't backfill it onto Car Rental/POS/MaoLeaw/Trident IMS just to be complete; MaoLeaw genuinely isn't tied to any job entry (personal project), and the placeholder-image projects that DO have an owner (Car Rental → Freelance, Trident IMS → Codeplay) already have it set correctly.
+- **CircleMenu is Experience-only, not a general replacement for Popover.** It was explicitly tried in Skills and explicitly reverted for being unworkable in a dense grid (see §4). Don't reintroduce it there without a real design change to justify it.
+- **Skills card empty state:** a skill with zero linked projects renders as a plain non-interactive `<div>`, not a button/trigger of any kind. This was a deliberate simplification (previously showed a Popover with a "not used yet" message) — don't re-add the empty-state message unless asked.
+- **`popover.tsx`** (`src/components/ui/popover.tsx`) was deleted then recreated identically mid-session when Skills reverted from CircleMenu back to Popover — if you're diffing history and see a delete+recreate, that's why; the file is currently in active use (Skills), not dead code.
+- **`shiny-button.tsx`** (`src/components/ui/shiny-button.tsx`) is dead code as of the merge in `10dad56` (Live button restyled to match the plain Code button) — confirmed via project-wide grep, zero remaining imports. Not deleted yet; safe to delete if you're doing cleanup, but nobody's asked for that specifically.
 
 ## 4. Gotchas / lessons learned
 
-- **ThemeToggle hydration mismatch (real, reproduced by running the dev server) — commit `804e21a`.** `next-themes`'s `resolvedTheme` resolves on the client's very first render, before hydration completes, differing from the server-rendered value. Fix is next-themes' own documented workaround: a `mounted` state flag set in `useEffect`, rendering a placeholder until true — **do not simplify this away** for `react-hooks/set-state-in-effect` lint-purity reasons; that exact "fix" was tried first and caused the real bug. The inline eslint-disable comment on that line is intentional.
-- **Zoom Parallax breaks on mobile if only `prefers-reduced-motion` is guarded — commit `7d6d4a4`.** Desktop-tuned `vw`/`vh` absolute image positions plus a 300vh scroll-jacking track render as broken/overlapping thin strips below 768px (confirmed visually at 375px). Fix: treat mobile as another trigger for the same static-grid fallback already used for reduced-motion (`useMediaQuery("(max-width: 767px)")`) — don't retune desktop positions for mobile, the static fallback is the intended answer per `docs/PRD.md` §5.
-- **A prior test run of this very `handoff` skill hallucinated that the resume download button was unimplemented**, despite claiming to have grepped `src/`. It hadn't actually checked `sections/contact.tsx` thoroughly. This session re-verified with a real project-wide grep and confirmed it's wired (§2). Lesson generalized into the skill itself: absence claims now require exhaustive, named verification, not a confident guess.
+- **Preview-tool rAF/visibility throttling makes JS-driven animations appear frozen — not a real bug, confirmed twice this session.** When the preview browser tab is unfocused/hidden (`document.hasFocus()===false` and/or `document.visibilityState==="hidden"`, common in this automated environment), Framer Motion's `animate`/spring transitions can sit at their initial state for several seconds before catching up, because `requestAnimationFrame` gets heavily throttled. Confirmed on: the Hero entrance animation (stuck at `opacity:0` until the tab was clicked into focus, then completed correctly) and the Experience CircleMenu fan-out (items sat at `transform: none` for 1-2s, then animated correctly once given ~6s of real wait). **When verifying animations in this tool, wait several real seconds (not just the animation's own duration) before concluding something is broken**, and cross-check `document.hasFocus()`/`visibilityState` before filing it as a bug.
+- **`preview_click` (the tool's synthetic click) can misbehave on toggle/open-close components** — confirmed this session on `CircleMenu`'s trigger (a single `preview_click` sometimes left it in the *closed* state immediately, as if two click events fired). A plain `element.click()` via `preview_eval` is more reliable for toggle buttons in this tool. Same category of artifact as an earlier-documented case (`preview_click` closing an open Radix Dialog).
+- **`preview_screenshot` intermittently returns a blank/frozen or oddly-cropped image** in this session (recurring artifact, not new) — when it happens, don't trust it as evidence of a real rendering bug; cross-verify via `getBoundingClientRect()`/`getComputedStyle()` in `preview_eval` instead, which was reliable throughout.
+- **CircleMenu tooltip placement took two wrong iterations before the right one:**
+  1. First attempt: icon-only circles, tooltip appeared *below* each item (`top-full`) — items at different heights in the arc meant one item's tooltip visually overlapped a neighboring item's icon. Wrong.
+  2. Second attempt (overcorrection): switched to always-visible icon+label "pills" instead of hover tooltips, to sidestep the collision entirely. User's actual ask was narrower than this — they wanted hover tooltips, just positioned correctly.
+  3. **Landed on:** icon-only circles again, but the tooltip is anchored to *that item's own right side* (`left-full ml-2`, vertically centered on that specific item), not below it and not a single shared tooltip element. Since items are already at different heights along the arc, anchoring each tooltip to its own item makes the tooltips naturally stagger without ever needing to reason about neighbor collision explicitly.
+  - Lesson: when a fan-out/radial menu's hover labels collide, check whether the label's anchor *axis* is the problem (perpendicular to the fan direction is often safer than parallel) before reaching for a bigger structural change like always-visible labels.
+- **Native `<button>` elements do not get `cursor: pointer` by default** in this project's Tailwind v4 setup (no Preflight rule sets it, unlike some older Tailwind defaults) — this was a real, site-wide, easy-to-miss gap covering ThemeToggle, LanguageToggle, and every raw `<button>` in Skills/Projects/Experience. Only fixed where explicitly asked (Skills + Projects) this session — **ThemeToggle/LanguageToggle and other raw buttons elsewhere in the site likely still lack it**; a project-wide `cursor-pointer` sweep on interactive elements would be a reasonable low-risk follow-up if asked.
+- **Case-sensitivity between this Windows dev machine and a Linux prod host is a recurring real risk** (caught once already this session's predecessor: `/aboutMe/` vs actual `public/aboutME/`). When new image paths are added (as happened again this session with `public/TPS/...` screenshots), verify the referenced path casing matches the actual folder/file casing on disk exactly — Windows won't catch a mismatch locally; Vercel's Linux filesystem will 404.
 
 ## 5. Immediate next step
 
-**Single most obvious next action a fresh session can do without asking the user anything:** none of the code needs a code fix right now — the two most impactful next steps both need the user's input, not more coding:
-1. **Get real project screenshots + About-section photos.** Five image slots in `about-images.ts`, two in `projects.ts`, all currently placeholders — this is the single most visible gap when someone actually looks at the site.
-2. **Set up Resend** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` in a new `.env.local`) so the contact form can send real email — code needs zero changes for this, just credentials.
+**Single most obvious next action:** ask the user whether to **commit the current uncommitted work** (9 modified files + 2 new files — Skills/Experience rebuild, CircleMenu, job-history correction, cursor-pointer fixes, ProjectCard truncation, Hero animation). Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean — but it's a substantial, coherent batch of changes sitting uncommitted, and the user has been driving each individual feature request without yet saying "commit" for this round. Don't commit without asking first; the user has previously committed work explicitly, in logically-separated commits per feature (see recent git log for the granularity they expect — e.g. `2616057`, `3c3bbd1`, `a1ff4d9`, `f275ad9` were four separate commits for four separate pieces of one session's work).
 
-If the user wants a next step that's purely code (no new decisions from them), the best candidate is **starting a `/qa` pass on `POST /api/contact`** — its validation/honeypot/rate-limit/Resend-failure branches are the one part of this codebase that's actually worth unit-testing, per `docs/SA_BLUEPRINT.md` §5, and no tests exist yet.
+If the user wants a next step that's pure code with no new decisions needed from them: **start a `/qa` pass on `POST /api/contact`** (still the one part of this codebase worth unit-testing — validation/honeypot/rate-limit/Resend-failure branches, per `docs/SA_BLUEPRINT.md` §5) — no tests exist yet, same as last briefing.
 
-**Explicitly flagged by the user (2026-07-02) as not to be forgotten:** picking up the deferred interactive micro-interactions is still an open want, not a dropped idea. Two parts to this:
-1. **The already-scoped candidates** from the original brainstorm (see §2/§3 above): Tilt Cards, Marquee tech-stack strip, Bento Grid for Projects, Blur Text Reveal, Animated Grid/Beam background. None have been picked up yet — ShinyButton and the Spotlight Card (project modal) are the only two shipped so far.
-2. **Go back to 21st.dev for fresh ideas, not just the ones already discussed.** The user asked specifically to look at 21st.dev again for additional interactive components/inspiration beyond what was scoped during the original brainstorming session — treat this as an open-ended re-scan, not a closed list. When picking anything up from there, keep `docs/UXUI_DESIGN.md`'s restraint principle in mind (reserve flourish for the 1-2 primary actions per section, don't make every element shiny) and respect `prefers-reduced-motion` for anything scroll-linked or looping, same as Zoom Parallax.
-
-This is a good candidate for the *next* `/dev` session specifically, since the user cares about it and it's independent of the image/Resend blockers above.
+Still open from before, not dropped: **Resend setup** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` in a new `.env.local`) so the contact form can send real email — needs the user's credentials, not code changes.
 
 ## 6. How to verify state
 
-Run these before trusting anything above still holds — uncommitted local edits made after this briefing was written wouldn't show up here:
-
 ```bash
-git status                # confirm clean tree / no stray local edits
-git log --oneline -20     # cross-check this briefing against actual history
+git status                # confirm what's actually uncommitted right now
+git log --oneline -25     # cross-check this briefing against actual history
 npm install               # dependencies per package.json/package-lock.json
 npm run lint               # ESLint — clean as of this session
 npx tsc --noEmit           # TypeScript — clean as of this session
-npm run build              # next build (Turbopack) — clean as of this session
+npm run build               # next build (Turbopack) — clean as of this session
 ```
 
 Expected `next build` output (as of this session): 3 routes — `/` (static), `/_not-found` (static), `/api/contact` (dynamic) — no errors, no warnings.
 
-To manually re-check the two things most likely to drift:
-- **Resume download:** open the running dev server, scroll to Contact, the "Download Resume (PDF)" link should open `/resume.pdf` in a new tab.
-- **Contact form:** submitting it locally without `RESEND_API_KEY` set should return an inline "something went wrong" banner (502 `delivery_failed`) — expected/correct behavior given no key is configured, not a bug to fix in code.
+To manually re-check the things most likely to drift:
+- **Experience → Projects links:** scroll to Experience, hover/click the small circular trigger on the Codeplay or Freelance entry — it should fan out project shortcuts to the right; clicking one should scroll to Projects and open that project's modal.
+- **Skills → Projects links:** scroll to Skills, click a card that has a colored logo and Simple Icons brand icon (most of them) — a Popover should list the project(s) it's used in (or the card simply won't be clickable if none — e.g. React Native, C/C++).
+- **Cursor:** hovering any Skills card, Project card title/View-Details button, or Experience's fan trigger/items should show a hand cursor, not an arrow.
+- **Contact form:** submitting locally without `RESEND_API_KEY` set should return an inline "something went wrong" banner (502 `delivery_failed`) — expected/correct, not a bug.
