@@ -12,9 +12,11 @@
 // default view but per-category tabs stay one click away.
 // Card hover (lift + border highlight + icon scale) mirrors ProjectCard's
 // treatment (src/components/project-card.tsx) so both grids feel consistent.
-// Clicking a card opens a popover listing which showcased projects use that
-// skill; clicking a project there asks ProjectSpotlightProvider to scroll to
-// Projects and open that project's modal.
+// Cards with related projects are a Popover trigger listing them; picking one
+// asks ProjectSpotlightProvider to scroll to Projects and open that project's
+// modal. A CircleMenu (fan-out) was tried here first but got clipped by
+// neighboring grid cards in a dense bento layout — Popover doesn't have that
+// problem since Radix renders it in a portal above everything.
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -63,63 +65,76 @@ export function SkillsBento() {
           const slug = SKILL_ICON_SLUGS[skill.name];
           const relatedProjects = getProjectsForSkill(skill.name);
 
+          const cardContent = (
+            <>
+              {slug && (
+                // eslint-disable-next-line @next/next/no-img-element -- tiny external SVG icon, not a page asset worth next/image's pipeline
+                <img
+                  src={`https://cdn.simpleicons.org/${slug}`}
+                  alt=""
+                  aria-hidden="true"
+                  className="size-8 transition-transform duration-300 group-hover:scale-110"
+                />
+              )}
+              <div>
+                <p className="text-sm font-bold tracking-wide uppercase">
+                  {skill.name}
+                </p>
+                <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+                  {t(`skills.categories.${skill.category}`)}
+                </p>
+              </div>
+            </>
+          );
+
+          const cardMotionProps = {
+            initial: reduceMotion ? false : { opacity: 0, y: 16 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true, margin: "-40px" },
+            transition: { duration: 0.3, delay: reduceMotion ? 0 : i * 0.03 },
+            whileHover: reduceMotion ? undefined : { y: -4 },
+          };
+
+          if (relatedProjects.length === 0) {
+            return (
+              <motion.div
+                key={skill.name}
+                {...cardMotionProps}
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card px-4 py-6 text-center transition-colors hover:border-primary/50"
+              >
+                {cardContent}
+              </motion.div>
+            );
+          }
+
           return (
             <Popover key={skill.name}>
               <PopoverTrigger asChild>
                 <motion.button
                   type="button"
-                  initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{
-                    duration: 0.3,
-                    delay: reduceMotion ? 0 : i * 0.03,
-                  }}
-                  whileHover={reduceMotion ? undefined : { y: -4 }}
-                  className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card px-4 py-6 text-center transition-colors hover:border-primary/50"
+                  {...cardMotionProps}
+                  className="group flex cursor-pointer flex-col items-center gap-3 rounded-2xl border border-border bg-card px-4 py-6 text-center transition-colors hover:border-primary/50"
                 >
-                  {slug && (
-                    // eslint-disable-next-line @next/next/no-img-element -- tiny external SVG icon, not a page asset worth next/image's pipeline
-                    <img
-                      src={`https://cdn.simpleicons.org/${slug}`}
-                      alt=""
-                      aria-hidden="true"
-                      className="size-8 transition-transform duration-300 group-hover:scale-110"
-                    />
-                  )}
-                  <div>
-                    <p className="text-sm font-bold tracking-wide uppercase">
-                      {skill.name}
-                    </p>
-                    <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-                      {t(`skills.categories.${skill.category}`)}
-                    </p>
-                  </div>
+                  {cardContent}
                 </motion.button>
               </PopoverTrigger>
               <PopoverContent>
                 <p className="mb-2 font-mono text-xs uppercase tracking-wide text-muted-foreground">
                   {t("skills.usedIn")}
                 </p>
-                {relatedProjects.length > 0 ? (
-                  <div className="flex flex-col gap-1">
-                    {relatedProjects.map((project) => (
-                      <PopoverClose key={project.id} asChild>
-                        <button
-                          type="button"
-                          onClick={() => requestProject(project.id)}
-                          className="rounded-lg px-2 py-1.5 text-left text-sm font-medium transition-colors hover:bg-accent hover:text-primary"
-                        >
-                          {project.title}
-                        </button>
-                      </PopoverClose>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    {t("skills.notUsedYet")}
-                  </p>
-                )}
+                <div className="flex flex-col gap-1">
+                  {relatedProjects.map((project) => (
+                    <PopoverClose key={project.id} asChild>
+                      <button
+                        type="button"
+                        onClick={() => requestProject(project.id)}
+                        className="cursor-pointer rounded-lg px-2 py-1.5 text-left text-sm font-medium transition-colors hover:bg-accent hover:text-primary"
+                      >
+                        {project.title}
+                      </button>
+                    </PopoverClose>
+                  ))}
+                </div>
               </PopoverContent>
             </Popover>
           );

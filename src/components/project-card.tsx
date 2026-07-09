@@ -48,7 +48,7 @@ export function ProjectCard({
             onClick={onOpenDetails}
             whileTap={reduceMotion ? undefined : { scale: 0.95 }}
             aria-label={`${t("projects.viewDetails")}: ${project.title}`}
-            className="inline-flex translate-y-3 items-center gap-2 rounded-lg border border-border/60 bg-background/80 px-5 py-2 text-sm font-semibold opacity-0 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover:translate-y-0 group-hover:opacity-100"
+            className="inline-flex translate-y-3 cursor-pointer items-center gap-2 rounded-lg border border-border/60 bg-background/80 px-5 py-2 text-sm font-semibold opacity-0 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover:translate-y-0 group-hover:opacity-100"
           >
             <Eye className="size-4" />
             {t("projects.viewDetails")}
@@ -61,7 +61,7 @@ export function ProjectCard({
           <button
             type="button"
             onClick={onOpenDetails}
-            className="text-left hover:text-primary"
+            className="cursor-pointer text-left hover:text-primary"
           >
             {project.title}
           </button>

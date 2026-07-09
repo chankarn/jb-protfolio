@@ -27,6 +27,8 @@ export const skills: Skill[] = [
   { name: "Prisma", category: "tools" },
   { name: "Turborepo", category: "tools" },
   { name: "LINE LIFF", category: "tools" },
+  { name: "Docker", category: "tools" },
+  { name: "Zustand", category: "frameworks" },
 ];
 
 export const SKILL_CATEGORY_ORDER: Skill["category"][] = [

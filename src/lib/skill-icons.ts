@@ -20,4 +20,6 @@ export const SKILL_ICON_SLUGS: Record<string, string> = {
   Prisma: "prisma",
   Turborepo: "turborepo",
   "LINE LIFF": "line",
+  Docker: "docker",
+  // Zustand has no icon in Simple Icons (verified 404) — card renders name-only.
 };
