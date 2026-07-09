@@ -1,7 +1,7 @@
 // Shape per docs/SA_BLUEPRINT.md §2 (extended: `images` replaces the single
 // `imageSrc` so the project modal can show a 2-4 screenshot carousel). Sourced
-// from the owner's resume (2026-07-02): these two predate the current Easset
-// role and aren't tied to a client NDA, so they're safe to publish as-is;
+// from the owner's resume (2026-07-02): these two predate the Easset role
+// (2024–2025-04) and aren't tied to a client NDA, so they're safe to publish as-is;
 // live/repo URLs are unknown for now and can be added once available.
 //
 // Car Rental Dashboard and POS System: the old codebases are no longer
@@ -19,6 +19,10 @@ export interface Project {
   liveUrl?: string;
   repoUrl?: string;
   confidentialityChecked: boolean;
+  // Matches an ExperienceEntry.id (src/content/experience.ts) so the
+  // Experience section can link straight to the project it produced — only
+  // set where that link is unambiguous (one job, one clear deliverable).
+  experienceId?: string;
 }
 
 export const projects: Project[] = [
@@ -32,6 +36,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Material UI", "Express.js"],
     images: ["", "", ""],
     confidentialityChecked: true,
+    experienceId: "car-rental-freelance",
   },
   {
     id: "pub-pos-system",
@@ -84,6 +89,7 @@ export const projects: Project[] = [
       "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.55.04.png",
     ],
     confidentialityChecked: true,
+    experienceId: "codeplay",
   },
   {
     // Company product (Astralix Codeplay, code-play.net — the owner's own
@@ -107,6 +113,7 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://astralix.code-play.net",
     confidentialityChecked: true,
+    experienceId: "codeplay",
   },
   {
     // Client campaign work (Taokaenoi x Thailand HR Tech 2026 booth, via the
@@ -130,6 +137,7 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://wjs.code-play.net",
     confidentialityChecked: true,
+    experienceId: "codeplay",
   },
   {
     // Client work (TPS — a real client of the owner's agency; started as a
@@ -152,5 +160,6 @@ export const projects: Project[] = [
     tags: ["Next.js", "NestJS", "TypeScript", "Prisma", "PostgreSQL", "Docker"],
     images: ["", "", ""],
     confidentialityChecked: true,
+    experienceId: "codeplay",
   },
 ];
