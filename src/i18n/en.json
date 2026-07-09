@@ -15,7 +15,7 @@
   },
   "about": {
     "heading": "A bit about me",
-    "body": "I'm a full-stack developer currently building mobile and web products at Easset Company Limited, with a Bachelor's in Computer Science from Kasetsart University. I enjoy working across the whole stack — from React and React Native on the frontend to Java and Node.js on the backend."
+    "body": "I'm a full-stack developer currently building web products for agency clients at Codeplay, with a Bachelor's in Computer Science from Kasetsart University. I enjoy working across the whole stack — from React and React Native on the frontend to Java and Node.js on the backend."
   },
   "projects": {
     "heading": "Projects",
@@ -32,12 +32,12 @@
       "frameworks": "Frameworks",
       "tools": "Tools"
     },
-    "usedIn": "Used in",
-    "notUsedYet": "Not used in a showcased project yet"
+    "usedIn": "Used in"
   },
   "experience": {
     "heading": "Experience",
-    "present": "Present"
+    "present": "Present",
+    "viewProjects": "View projects"
   },
   "contact": {
     "heading": "Contact",
