@@ -1,7 +1,7 @@
 # RESUME.md — Session Resume Briefing
 
 Project: **jb-protfolio** — bilingual (TH/EN) Software Engineer portfolio site for Chanakarn Susinraworn, built for job hunting.
-Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **working tree clean, 4 commits ahead of `origin/main`** as of 2026-07-09 (not yet pushed). Last commit: `4ba1f4b`. This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
+Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **up to date with `origin/main`** (the previous 5 commits, through `a34f4c9`, have been pushed). **One file currently uncommitted: `src/content/projects.ts`** (added `liveUrl` to MaoLeaw + SiPH Proud Point, reordered the array so Car Rental/POS — the two placeholder-image entries — sort last, changed SiPH's first carousel image to the Home-screen shot). This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
 
 ## 1. Pipeline position
 
@@ -12,8 +12,8 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **wo
 | UX/UI Design | ✅ | `docs/UXUI_DESIGN.md` |
 | Clickable prototype | ✅ | `docs/mockups/portfolio-prototype.html` |
 | Scaffold | ✅ | early commit history |
-| Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `4ba1f4b` |
-| QA | ⬜ not started | no test files anywhere (`find . -iname "*.test.*" -o -iname "*.spec.*"` excluding `node_modules` → empty), no test runner in `package.json` |
+| Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `a34f4c9` + 1 uncommitted file |
+| QA | 🚧 started (2026-07-09) | `e2e/contact-form.spec.ts` (Playwright, 5 tests, all passing) + `playwright.config.ts` — covers `POST /api/contact`'s validation/honeypot/rate-limit/Resend-failure branches per `docs/SA_BLUEPRINT.md` §5. Run via `npm run test:e2e`. Nothing else on the site has test coverage yet (everything else is static rendering, deliberately out of scope per §5). |
 | Devops/deploy | ⬜ not started | no `vercel.json`, no live URL for this site itself; `.github/workflows/ci.yml` exists (`npm ci` → lint → typecheck → build) but nothing deploys |
 
 **Doc hygiene note:** root `README.md`'s "Status" section still says *"Repo skeleton only — no feature code yet."* Still stale (was already flagged stale on 2026-07-02; nobody's fixed it since). Don't trust that one section; the rest of the README is fine.
@@ -25,7 +25,7 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **wo
 - Core sections wired in `src/app/page.tsx`: Navbar, Hero, About (Zoom Parallax), Projects, Skills, Experience, Contact, Footer.
 - i18n (TH/EN), theme (light/dark), contact form + `POST /api/contact` (Resend, zod, honeypot, rate-limit) — all unchanged from before, still working.
 - Resume/CV download still wired (`RESUME_URL = "/resume.pdf"` in `src/content/contact.ts`, real file at `public/resume.pdf`).
-- **Projects content is now real and much larger** — 7 entries in `src/content/projects.ts`: `car-rental-dashboard`, `pub-pos-system` (both still placeholder-box images, no real screenshots — old codebases inaccessible), `maoleaw` (real screenshots), `siph-proud-point`, `astralix`, `work-joy-station` (all three: real screenshots, `liveUrl` set on the latter two), `trident-ims` (placeholder — client hasn't signed off on screenshots yet, see in-file comment). Added via a merge from another machine (commit `10dad56`) plus this session's own edits.
+- **Projects content is now real and much larger** — 7 entries in `src/content/projects.ts`, ordered (real-screenshot projects first, placeholders last): `maoleaw`, `siph-proud-point`, `astralix`, `work-joy-station`, `trident-ims` (placeholder — client hasn't signed off on screenshots yet, see in-file comment), `car-rental-dashboard`, `pub-pos-system` (both placeholder-box images, no real screenshots — old codebases inaccessible). `liveUrl` now set on 4 of 7: MaoLeaw (`mao-leaw-liff.vercel.app`), SiPH Proud Point (`line.siph.code-play.net`), Astralix (`astralix.code-play.net`), Work Joy Station (`wjs.code-play.net`). SiPH's first carousel image is deliberately the Home-screen shot (picked by visually reviewing all 6 screenshots — bottom nav shows "Home" active), not upload order.
 - **Skills section fully rebuilt this session**: the old plain tag-list + an experimental marquee were both removed. Now: `SkillsBento` (`src/components/skills-bento.tsx`) — a tabbed (`AnimatedTabs`, All/Languages/Frameworks/Tools) bento grid of skill cards with live brand logos (Simple Icons CDN, verified per-slug before wiring). Cards with a matching project are a `Popover` (Radix) trigger listing linked project(s); picking one calls `ProjectSpotlightProvider.requestProject(id)`. 21 skills now (added Express.js, NestJS, Material UI, PostgreSQL, Prisma, Turborepo, LINE LIFF, Docker, Zustand — Zustand has no Simple Icons logo, confirmed via live 404 check, renders name-only).
 - **Cross-section "spotlight" navigation** (`src/components/providers/project-spotlight-provider.tsx`): a skill or an Experience entry can ask the Projects section to scroll into view and open a specific project's modal, without lifting Projects' own `selected` state up. Wired into `src/app/layout.tsx`.
 - **`CircleMenu` component built and adapted** (`src/components/ui/circle-menu.tsx`) from a 21st.dev-style reference — a trigger that fans items out along a configurable arc on a spring. Tried in Skills first (didn't work — got clipped by neighboring grid cards in the dense bento layout, reverted to Popover there). **Currently used only in Experience** — see below.
@@ -41,12 +41,11 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **wo
 
 **In progress / partially done:**
 - **Contact form email delivery still not functional end-to-end** — no `.env.local` exists (only `.env.example`, all three values blank: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`). Route returns a handled `502 delivery_failed`, not a crash.
-- This session's Skills/Experience/CircleMenu/job-history work is now committed (4 commits: `5b1977b`, `ec80e85`, `4ba97b5`, `4ba1f4b`) but **not pushed** — `main` is 4 commits ahead of `origin/main`. Confirm with the user before pushing.
+- The Skills/Experience/CircleMenu/job-history work (5 commits: `5b1977b`…`a34f4c9`) is committed **and pushed**. The projects.ts reorder/liveUrl/image-order change (see repo-state line above) is **uncommitted** — confirm with the user before committing/pushing.
 - Car Rental Dashboard / POS System / Trident IMS still ship as honest placeholder boxes (no real screenshots) — this is a deliberate, previously-confirmed choice (old codebases inaccessible; Trident IMS awaiting client sign-off), not an oversight.
 
 **Not started:**
-- No `/qa` pass — no tests exist anywhere.
-- No `/devops` pass — no CI deploy step, no hosting set up (Vercel free tier is the named target, per earlier user confirmation, nothing configured yet).
+- No `/devops` pass — no CI deploy step, no hosting set up (Vercel free tier is the named target, per earlier user confirmation, nothing configured yet). The CI workflow (`.github/workflows/ci.yml`) does NOT yet run the new E2E suite — only lint/typecheck/build. Wiring `npm run test:e2e` into CI is a `/devops`-stage task, not done as part of this QA pass.
 - WCAG AA contrast check on the accent color, flagged in `docs/UXUI_DESIGN.md` §5, never run.
 - README's stale "Status" section (see §1) — still not fixed.
 
@@ -72,13 +71,15 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **wo
   3. **Landed on:** icon-only circles again, but the tooltip is anchored to *that item's own right side* (`left-full ml-2`, vertically centered on that specific item), not below it and not a single shared tooltip element. Since items are already at different heights along the arc, anchoring each tooltip to its own item makes the tooltips naturally stagger without ever needing to reason about neighbor collision explicitly.
   - Lesson: when a fan-out/radial menu's hover labels collide, check whether the label's anchor *axis* is the problem (perpendicular to the fan direction is often safer than parallel) before reaching for a bigger structural change like always-visible labels.
 - **Native `<button>` elements do not get `cursor: pointer` by default** in this project's Tailwind v4 setup (no Preflight rule sets it, unlike some older Tailwind defaults) — this was a real, site-wide, easy-to-miss gap covering ThemeToggle, LanguageToggle, and every raw `<button>` in Skills/Projects/Experience. Only fixed where explicitly asked (Skills + Projects) this session — **ThemeToggle/LanguageToggle and other raw buttons elsewhere in the site likely still lack it**; a project-wide `cursor-pointer` sweep on interactive elements would be a reasonable low-risk follow-up if asked.
+- **Playwright's `.fill(value, {force: true})` is unreliable on a `display:none` element** — confirmed while writing the honeypot E2E test (`e2e/contact-form.spec.ts`): force-filling the hidden `input[name="honeypot"]` didn't set its value at all; instead the typed text got appended onto the *previously-focused* field (the message textarea), corrupting that field's value (confirmed via the test's own accessibility-tree failure dump, which showed `spam messagei-am-a-bot` inside the Message textbox). Root cause: force skips actionability checks including the focus step, and a display:none element can't actually receive focus, so fill's internal clear+type ends up acting on whatever was focused before. Fix: set the value directly via `locator.evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", {bubbles: true})); }, value)` instead — bypasses focus entirely, which also better simulates how a real bot script would set a hidden field anyway.
+- **The rate limiter (`src/lib/rate-limit.ts`) is in-memory and shared across the whole dev-server process** — an E2E test that exercises it for real (not mocked) must set a unique `x-forwarded-for` header per test run (`context.setExtraHTTPHeaders`), or repeat runs against the same still-running dev server will collide with leftover state from the previous run. Verified this session by running the suite twice back-to-back with no server restart — passed both times only because of the per-run random test IP.
 - **Case-sensitivity between this Windows dev machine and a Linux prod host is a recurring real risk** (caught once already this session's predecessor: `/aboutMe/` vs actual `public/aboutME/`). When new image paths are added (as happened again this session with `public/TPS/...` screenshots), verify the referenced path casing matches the actual folder/file casing on disk exactly — Windows won't catch a mismatch locally; Vercel's Linux filesystem will 404.
 
 ## 5. Immediate next step
 
-**Single most obvious next action:** ask the user whether to **push the 4 committed-but-unpushed commits** (`5b1977b` job history, `ec80e85` Experience CircleMenu, `4ba97b5` Skills polish/cursor-pointer, `4ba1f4b` this doc) to `origin/main`. Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean — but don't push without asking first, same as any other push.
+**Single most obvious next action:** ask the user whether to **commit the currently-uncommitted work** — `src/content/projects.ts` (liveUrl additions, project reorder, SiPH image reorder) plus the new QA artifacts (`playwright.config.ts`, `e2e/contact-form.spec.ts`, `.gitignore`/`package.json` updates for `test:e2e`). Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean, the E2E suite is 5/5 passing and verified deterministic across repeat runs (see §6) — but don't commit without asking first, same as every other batch this session.
 
-If the user wants a next step that's pure code with no new decisions needed from them: **start a `/qa` pass on `POST /api/contact`** (still the one part of this codebase worth unit-testing — validation/honeypot/rate-limit/Resend-failure branches, per `docs/SA_BLUEPRINT.md` §5) — no tests exist yet, same as last briefing.
+If the user wants a next step that's pure code with no new decisions needed from them: **`/devops`** is the next unstarted pipeline stage — wiring `npm run test:e2e` (with `npx playwright install --with-deps chromium`) into `.github/workflows/ci.yml`, and picking/setting up the Vercel deploy.
 
 Still open from before, not dropped: **Resend setup** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` in a new `.env.local`) so the contact form can send real email — needs the user's credentials, not code changes.
 
@@ -91,6 +92,8 @@ npm install               # dependencies per package.json/package-lock.json
 npm run lint               # ESLint — clean as of this session
 npx tsc --noEmit           # TypeScript — clean as of this session
 npm run build               # next build (Turbopack) — clean as of this session
+npx playwright install chromium  # one-time, if browsers aren't already cached
+npm run test:e2e            # Playwright E2E — 5/5 passing as of this session
 ```
 
 Expected `next build` output (as of this session): 3 routes — `/` (static), `/_not-found` (static), `/api/contact` (dynamic) — no errors, no warnings.
