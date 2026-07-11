@@ -1,7 +1,7 @@
 # RESUME.md — Session Resume Briefing
 
 Project: **jb-protfolio** — bilingual (TH/EN) Software Engineer portfolio site for Chanakarn Susinraworn, built for job hunting.
-Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **up to date with `origin/main`** (the previous 5 commits, through `a34f4c9`, have been pushed). **One file currently uncommitted: `src/content/projects.ts`** (added `liveUrl` to MaoLeaw + SiPH Proud Point, reordered the array so Car Rental/POS — the two placeholder-image entries — sort last, changed SiPH's first carousel image to the Home-screen shot). This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
+Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, working tree clean, **3 commits ahead of `origin/main`** (through `42c4116`), not yet pushed. Confirm with the user before pushing. This briefing supersedes the 2026-07-02 version in full — most of what follows postdates it.
 
 ## 1. Pipeline position
 
@@ -14,7 +14,7 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **up
 | Scaffold | ✅ | early commit history |
 | Dev (feature build) | 🚧 ongoing — actively being iterated on, not "done" in a final sense | commits through `a34f4c9` + 1 uncommitted file |
 | QA | 🚧 started (2026-07-09) | `e2e/contact-form.spec.ts` (Playwright, 5 tests, all passing) + `playwright.config.ts` — covers `POST /api/contact`'s validation/honeypot/rate-limit/Resend-failure branches per `docs/SA_BLUEPRINT.md` §5. Run via `npm run test:e2e`. Nothing else on the site has test coverage yet (everything else is static rendering, deliberately out of scope per §5). |
-| Devops/deploy | ⬜ not started | no `vercel.json`, no live URL for this site itself; `.github/workflows/ci.yml` exists (`npm ci` → lint → typecheck → build) but nothing deploys |
+| Devops/deploy | 🚧 CI updated (2026-07-09), actual deploy still manual | `.github/workflows/ci.yml` now runs `npm ci` → lint → typecheck → build → Playwright E2E; `playwright.config.ts` runs the E2E webServer against a production build (`next build && next start`) in CI, `next dev` locally. **No live deploy yet** — Vercel free tier is the confirmed target (`docs/SA_BLUEPRINT.md` line 18) but connecting the repo to Vercel is a manual dashboard action the owner must do themselves (needs their Vercel account) — see §5 for the exact steps. No `vercel.json` — a standard Next.js app needs zero Vercel config. |
 
 **Doc hygiene note:** root `README.md`'s "Status" section still says *"Repo skeleton only — no feature code yet."* Still stale (was already flagged stale on 2026-07-02; nobody's fixed it since). Don't trust that one section; the rest of the README is fine.
 
@@ -77,11 +77,11 @@ Repo: `C:\Users\jamesbond\Documents\GitHub\jb-protfolio` — branch `main`, **up
 
 ## 5. Immediate next step
 
-**Single most obvious next action:** ask the user whether to **commit the currently-uncommitted work** — `src/content/projects.ts` (liveUrl additions, project reorder, SiPH image reorder) plus the new QA artifacts (`playwright.config.ts`, `e2e/contact-form.spec.ts`, `.gitignore`/`package.json` updates for `test:e2e`). Nothing in the working tree is broken or half-finished — lint/typecheck/build are all clean, the E2E suite is 5/5 passing and verified deterministic across repeat runs (see §6) — but don't commit without asking first, same as every other batch this session.
+**Single most obvious next action:** ask the user whether to **push the 3 committed-but-unpushed commits** (`c04ae69` project content, `3daf82e` Playwright E2E, `42c4116` CI wiring) to `origin/main`. Nothing in the working tree is broken — lint/typecheck/build are clean, the E2E suite is 5/5 passing against both dev and production-build modes (see §6) — but don't push without asking first, same as any other push.
 
-If the user wants a next step that's pure code with no new decisions needed from them: **`/devops`** is the next unstarted pipeline stage — wiring `npm run test:e2e` (with `npx playwright install --with-deps chromium`) into `.github/workflows/ci.yml`, and picking/setting up the Vercel deploy.
+**The actual Vercel deploy is a manual step only the owner can do** (needs their Vercel account — not something this session can do on their behalf): go to vercel.com → "Add New Project" → import the `chankarn/jb-protfolio` GitHub repo → Vercel auto-detects Next.js, zero config needed → before first deploy, add these Environment Variables in the project settings (names only, real values are the owner's Resend credentials, never put them in any committed file): `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` → Deploy. After that, every push to `main` auto-deploys (Vercel's GitHub integration handles this — no GitHub Actions deploy step needed/added).
 
-Still open from before, not dropped: **Resend setup** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` in a new `.env.local`) so the contact form can send real email — needs the user's credentials, not code changes.
+Still open from before, not dropped: **Resend setup** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` — the same three vars needed above) so the contact form can send real email locally too, via a new `.env.local` — needs the user's credentials, not code changes.
 
 ## 6. How to verify state
 
@@ -93,7 +93,8 @@ npm run lint               # ESLint — clean as of this session
 npx tsc --noEmit           # TypeScript — clean as of this session
 npm run build               # next build (Turbopack) — clean as of this session
 npx playwright install chromium  # one-time, if browsers aren't already cached
-npm run test:e2e            # Playwright E2E — 5/5 passing as of this session
+npm run test:e2e            # Playwright E2E (dev server) — 5/5 passing as of this session
+CI=true npx playwright test  # same suite against a production build (what CI runs) — 5/5 passing
 ```
 
 Expected `next build` output (as of this session): 3 routes — `/` (static), `/_not-found` (static), `/api/contact` (dynamic) — no errors, no warnings.
