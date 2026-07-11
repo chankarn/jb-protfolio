@@ -27,29 +27,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "car-rental-dashboard",
-    title: "Car Rental Case Management Dashboard",
-    description_en:
-      "A dashboard for car rental operations: customer bookings, driver assignments, case tracking, and revenue/performance reports by day, month, and overall trend.",
-    description_th:
-      "แดชบอร์ดสำหรับจัดการงานเช่ารถ ครอบคลุมการจองของลูกค้า มอบหมายคนขับ ติดตามเคส และรายงานรายได้/ผลงานรายวัน รายเดือน และภาพรวม",
-    tags: ["Next.js", "TypeScript", "Material UI", "Express.js"],
-    images: ["", "", ""],
-    confidentialityChecked: true,
-    experienceId: "car-rental-freelance",
-  },
-  {
-    id: "pub-pos-system",
-    title: "POS Web Application for Pub Management",
-    description_en:
-      "A point-of-sale system for pubs covering admin, kitchen, and cashier roles — room booking, product sales, in-room ordering, and sales/inventory reporting from a centralized dashboard.",
-    description_th:
-      "ระบบ POS สำหรับร้านผับ ครอบคลุมบทบาท admin ครัว และแคชเชียร์ มีระบบจองห้อง ขายสินค้า สั่งอาหารในห้อง และรายงานยอดขาย/สต๊อกจากแดชบอร์ดกลาง",
-    tags: ["React.js", "Node.js", "MySQL"],
-    images: ["", "", ""],
-    confidentialityChecked: true,
-  },
-  {
     id: "maoleaw",
     title: "MaoLeaw — Event & Bill Splitter",
     description_en:
@@ -63,6 +40,7 @@ export const projects: Project[] = [
       "/Maoleaw/Screenshot%202569-07-04%20at%2017.30.09.png",
       "/Maoleaw/Screenshot%202569-07-04%20at%2017.30.51.png",
     ],
+    liveUrl: "https://mao-leaw-liff.vercel.app/",
     confidentialityChecked: true,
   },
   {
@@ -81,13 +59,14 @@ export const projects: Project[] = [
       "แพลตฟอร์มสะสมแต้ม/ของรางวัลสำหรับโรงพยาบาลในรูปแบบ LINE Mini App ผู้ป่วยสมัครสมาชิกผ่าน LINE (ผูกเลข HN) สะสมแต้มจากกิจกรรม แบบสำรวจสุขภาพ เช็คอินรายวัน และบทความ แล้วนำไปแลกของรางวัลหรือลุ้นวงล้อ มีระบบเหรียญตราและลีดเดอร์บอร์ดให้สนุกแบบเกม พร้อม CRM หลังบ้านให้แอดมินจัดการแคมเปญและของรางวัล",
     tags: ["Next.js", "NestJS", "Prisma", "PostgreSQL", "LINE LIFF", "Docker"],
     images: [
+      "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.54.09.png",
       "/TPS/proudpoint/Screenshot%202569-07-08%20at%2000.03.23.png",
       "/TPS/proudpoint/Screenshot%202569-07-08%20at%2000.02.55.png",
       "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.57.00.png",
-      "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.54.09.png",
       "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.55.46.png",
       "/TPS/proudpoint/Screenshot%202569-07-07%20at%2023.55.04.png",
     ],
+    liveUrl: "https://line.siph.code-play.net/",
     confidentialityChecked: true,
     experienceId: "codeplay",
   },
@@ -161,5 +140,28 @@ export const projects: Project[] = [
     images: ["", "", ""],
     confidentialityChecked: true,
     experienceId: "codeplay",
+  },
+  {
+    id: "car-rental-dashboard",
+    title: "Car Rental Case Management Dashboard",
+    description_en:
+      "A dashboard for car rental operations: customer bookings, driver assignments, case tracking, and revenue/performance reports by day, month, and overall trend.",
+    description_th:
+      "แดชบอร์ดสำหรับจัดการงานเช่ารถ ครอบคลุมการจองของลูกค้า มอบหมายคนขับ ติดตามเคส และรายงานรายได้/ผลงานรายวัน รายเดือน และภาพรวม",
+    tags: ["Next.js", "TypeScript", "Material UI", "Express.js"],
+    images: ["", "", ""],
+    confidentialityChecked: true,
+    experienceId: "car-rental-freelance",
+  },
+  {
+    id: "pub-pos-system",
+    title: "POS Web Application for Pub Management",
+    description_en:
+      "A point-of-sale system for pubs covering admin, kitchen, and cashier roles — room booking, product sales, in-room ordering, and sales/inventory reporting from a centralized dashboard.",
+    description_th:
+      "ระบบ POS สำหรับร้านผับ ครอบคลุมบทบาท admin ครัว และแคชเชียร์ มีระบบจองห้อง ขายสินค้า สั่งอาหารในห้อง และรายงานยอดขาย/สต๊อกจากแดชบอร์ดกลาง",
+    tags: ["React.js", "Node.js", "MySQL"],
+    images: ["", "", ""],
+    confidentialityChecked: true,
   },
 ];
