@@ -80,12 +80,17 @@ export function Hero() {
           className="relative z-10 mt-10 h-[240px] w-auto self-center md:absolute md:inset-y-auto md:right-10 md:bottom-0 md:mt-0 md:h-[85%] md:self-auto"
         >
           <Image
-            src="/Gemini_Generated_Image_sxf1m4sxf1m4sxf1.png"
+            src="/aboutME/DSC05559_diecut.png"
             alt="Chanakarn Susinraworn"
+            // Intrinsic size kept at the OLD photo's aspect ratio (not this
+            // file's real 1501x1948), so the rendered box's size/position
+            // (height-constrained, width auto via aspect-ratio) stays
+            // identical to before the swap — object-contain then fits this
+            // image inside that same box without distorting it.
             width={1684}
             height={2528}
             priority
-            className="h-full w-auto object-contain"
+            className="h-full w-auto object-contain [transform:scaleX(-1)]"
           />
         </motion.div>
       </div>
