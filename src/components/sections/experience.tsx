@@ -13,10 +13,18 @@
 // reserved so it never collides with the trigger itself. Each fanned item is
 // an icon-only circle; hovering shows its title in a tooltip anchored to
 // that item's own right side.
+//
+// On narrow viewports there's no gutter to the right of the entry (it's full
+// width, unlike desktop's max-w-2xl column leaving room before the section's
+// max-w-6xl edge) — fanning right there would push items off-screen. Below
+// md, the fan instead opens left/up/down (into the entry's own text area,
+// same accepted-overlap tradeoff as Skills originally tried), which always
+// has room since the entry spans the full viewport width.
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
 import { useProjectSpotlight } from "@/components/providers/project-spotlight-provider";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { CircleMenu } from "@/components/ui/circle-menu";
 import { experience } from "@/content/experience";
 import { getProjectsForExperience } from "@/lib/experience-projects";
@@ -25,6 +33,7 @@ export function Experience() {
   const { t, lang } = useLanguage();
   const reduceMotion = useReducedMotion();
   const { requestProject } = useProjectSpotlight();
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   return (
     <section id="experience" className="border-t border-border py-24">
@@ -66,8 +75,8 @@ export function Experience() {
                     className="absolute top-1/2 right-0 -translate-y-1/2"
                     triggerLabel={t("experience.viewProjects")}
                     arc={180}
-                    startAngle={-90}
-                    radius={56}
+                    startAngle={isMobile ? 90 : -90}
+                    radius={isMobile ? 44 : 56}
                     itemSize={28}
                     items={linkedProjects.map((project) => ({
                       label: project.title,
